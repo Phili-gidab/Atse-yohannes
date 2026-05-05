@@ -9,6 +9,9 @@ interface LayoutProps {
 
 const Main = styled.main`
   flex: 1;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
 `;
 
 export const Layout = ({ children }: LayoutProps) => {

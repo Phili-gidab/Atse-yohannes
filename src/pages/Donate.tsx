@@ -49,6 +49,10 @@ const Tier = styled(motion.button)<{ $selected: boolean; $featured?: boolean }>`
   text-align: left;
   transition: all 0.25s ease;
   font-family: inherit;
+  min-width: 0;
+  width: 100%;
+
+  @media (max-width: 460px) { padding: 1.1rem 1.25rem; }
 
   ${({ $featured }) =>
     $featured &&
@@ -100,6 +104,7 @@ const Tier = styled(motion.button)<{ $selected: boolean; $featured?: boolean }>`
 const CustomAmount = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.75rem;
   background: white;
   border: 2px solid var(--color-neutral-200);
@@ -108,6 +113,13 @@ const CustomAmount = styled.div`
   margin-bottom: 2rem;
 
   &:focus-within { border-color: var(--color-secondary-500); }
+
+  input { min-width: 0; }
+  .freq { flex-shrink: 0; }
+
+  @media (max-width: 460px) {
+    .freq { width: 100%; justify-content: center; }
+  }
 
   .currency {
     font-family: var(--font-heading);

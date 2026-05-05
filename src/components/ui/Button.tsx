@@ -74,6 +74,8 @@ const StyledButton = styled.button<BaseProps>`
   transition: all 0.25s ease;
   text-decoration: none;
   white-space: nowrap;
+  min-width: 0;
+  max-width: 100%;
   ${({ $size }) => {
     const s = sizeStyles($size);
     return `padding: ${s.padding}; font-size: ${s.fontSize};`;
