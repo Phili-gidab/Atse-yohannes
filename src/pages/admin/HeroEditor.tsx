@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Save, CheckCircle2, AlertCircle } from 'lucide-react';
 import { db } from '../../config/firebase';
 import { HERO } from '../../data/content';
+import { ImageUpload } from '../../components/admin/ImageUpload';
 
 interface HeroDoc {
   eyebrow: string;
@@ -186,12 +187,12 @@ export const HeroEditor = () => {
             </div>
 
             <div className="row">
-              <label>Background image URL</label>
-              <input
-                type="text"
-                value={data.backgroundImage ?? ''}
-                onChange={(e) => update('backgroundImage', e.target.value)}
-                placeholder="/2e595e1316ac68a639018427a63548ff.jpg or any URL"
+              <label>Background image</label>
+              <ImageUpload
+                value={data.backgroundImage}
+                onChange={(url) => update('backgroundImage', url)}
+                folder="site/hero"
+                hint="or paste an image URL"
               />
             </div>
 

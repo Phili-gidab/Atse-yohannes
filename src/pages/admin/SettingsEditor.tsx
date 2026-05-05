@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Save, CheckCircle2, AlertCircle } from 'lucide-react';
 import { db } from '../../config/firebase';
 import { ORG, OUR_STORY, STORY } from '../../data/content';
+import { ImageUpload } from '../../components/admin/ImageUpload';
 
 const Header = styled.div`
   margin-bottom: 1.5rem;
@@ -233,8 +234,13 @@ export const SettingsEditor = () => {
                 <textarea value={story.body} onChange={(e) => setStory({ ...story, body: e.target.value })} />
               </div>
               <div>
-                <label>Image URL</label>
-                <input value={story.image ?? ''} onChange={(e) => setStory({ ...story, image: e.target.value })} />
+                <label>Image</label>
+                <ImageUpload
+                  value={story.image}
+                  onChange={(url) => setStory({ ...story, image: url ?? '' })}
+                  folder="site/story"
+                  hint="or paste an image URL"
+                />
               </div>
             </div>
           </Card>

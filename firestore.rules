@@ -68,13 +68,16 @@ service cloud.firestore {
     match /chapters/{id}              { allow read: if true; allow write: if isAdmin(); }
     match /donationTiers/{id}         { allow read: if true; allow write: if isAdmin(); }
     match /settings/{id}              { allow read: if true; allow write: if isAdmin(); }
+    match /impactMetrics/{id}         { allow read: if true; allow write: if isAdmin(); }
+    match /howWeWork/{id}             { allow read: if true; allow write: if isAdmin(); }
+    match /values/{id}                { allow read: if true; allow write: if isAdmin(); }
 
     // ---------- Resources Hub ----------
-    // Public can list resources; member-only items are gated client + rule side.
+    // Public read (so admin counts/lists work and the UI can render "members
+    // only" placeholders). The `visibility: 'members'` flag is a UI gate, not
+    // a hard secret — admins shouldn't put truly sensitive material here.
     match /resources/{id} {
-      allow read: if resource == null
-                    || resource.data.visibility == 'public'
-                    || (resource.data.visibility == 'members' && isMember());
+      allow read: if true;
       allow write: if isAdmin();
     }
 
