@@ -100,6 +100,8 @@ const FormCard = styled.form`
   border-radius: 22px;
   box-shadow: var(--shadow-md);
 
+  @media (max-width: 600px) { padding: 1.5rem; border-radius: 16px; }
+
   h3 { color: var(--color-primary-900); margin-bottom: 1.5rem; }
 
   .field {

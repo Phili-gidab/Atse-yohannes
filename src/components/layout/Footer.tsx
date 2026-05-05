@@ -16,6 +16,8 @@ const Wrap = styled.footer`
   color: rgba(255, 255, 255, 0.8);
   padding: 4rem 0 1.5rem;
   margin-top: auto;
+
+  @media (max-width: 600px) { padding: 2.5rem 0 1.25rem; }
 `;
 
 const Container = styled.div`
@@ -34,9 +36,11 @@ const Grid = styled.div`
   @media (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    padding-bottom: 2rem;
   }
   @media (max-width: 560px) {
     grid-template-columns: 1fr;
+    gap: 1.75rem;
   }
 `;
 

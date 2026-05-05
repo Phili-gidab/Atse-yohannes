@@ -80,9 +80,14 @@ const Table = styled.div`
   }
 
   @media (max-width: 800px) {
-    .row { grid-template-columns: 1fr 1fr; }
+    .row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
     .row .meta { display: none; }
     .row.head { display: none; }
+    .row .email { font-size: 0.82rem; }
   }
 `;
 

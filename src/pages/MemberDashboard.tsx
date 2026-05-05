@@ -62,11 +62,12 @@ const Card = styled.div`
   p { color: var(--color-neutral-600); font-size: 0.92rem; margin-bottom: 0.75rem; }
   form { display: grid; gap: 0.75rem; margin-top: 0.75rem; }
   label { font-size: 0.82rem; font-weight: 600; color: var(--color-neutral-700); }
-  input, textarea {
+  input:not([type='checkbox']):not([type='radio']), textarea {
     width: 100%; padding: 0.6rem 0.8rem;
     border: 1px solid var(--color-neutral-300);
     border-radius: 9px; font-size: 0.92rem;
   }
+  input[type='checkbox'] { width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
   .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; @media (max-width: 600px) { grid-template-columns: 1fr; } }
 
   button {
@@ -307,7 +308,7 @@ const DashboardInner = () => {
               <label>Short bio</label>
               <textarea value={profile.bio} onChange={(e) => set('bio', e.target.value)} />
             </div>
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', justifySelf: 'start' }}>
               <input
                 type="checkbox"
                 checked={profile.publicInDirectory}

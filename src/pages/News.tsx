@@ -59,6 +59,8 @@ const Featured = styled(motion(Link))`
     flex-direction: column;
     justify-content: center;
 
+    @media (max-width: 700px) { padding: 1.5rem; }
+
     .meta {
       display: flex;
       align-items: center;
@@ -83,7 +85,7 @@ const Featured = styled(motion(Link))`
         font-size: 0.85rem;
       }
     }
-    h2 { color: var(--color-primary-900); font-size: 1.85rem; margin-bottom: 1rem; line-height: 1.2; }
+    h2 { color: var(--color-primary-900); font-size: clamp(1.35rem, 4vw, 1.85rem); margin-bottom: 1rem; line-height: 1.25; }
     p { color: var(--color-neutral-600); font-size: 1.025rem; line-height: 1.65; margin-bottom: 1.5rem; }
     .read {
       color: var(--color-secondary-700);
@@ -119,7 +121,12 @@ const Card = styled(motion(Link))`
   display: grid;
   grid-template-columns: 0.4fr 0.6fr;
 
-  @media (max-width: 540px) { grid-template-columns: 1fr; }
+  .image { aspect-ratio: 4 / 3; }
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    .image { aspect-ratio: 16 / 9; }
+  }
 
   .image {
     overflow: hidden;

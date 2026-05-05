@@ -33,6 +33,19 @@ const Wrap = styled.div`
   }
 `;
 
+const Scrim = styled.button<{ $open: boolean }>`
+  display: none;
+  @media (max-width: 900px) {
+    display: ${({ $open }) => ($open ? 'block' : 'none')};
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.45);
+    border: none;
+    cursor: pointer;
+  }
+`;
+
 const Sidebar = styled.aside<{ $open: boolean }>`
   background: linear-gradient(180deg, var(--color-primary-950), var(--color-primary-900));
   color: white;
@@ -217,6 +230,7 @@ export const AdminLayout = () => {
 
   return (
     <Wrap>
+      <Scrim $open={open} onClick={() => setOpen(false)} aria-label="Close menu" />
       <Sidebar $open={open}>
         <Brand to="/admin" onClick={() => setOpen(false)}>
           <span className="dot">A</span>

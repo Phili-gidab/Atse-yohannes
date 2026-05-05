@@ -98,6 +98,13 @@
   --container-padding: 1.5rem;
 }
 
+@media (max-width: 600px) {
+  :root { --container-padding: 1.1rem; }
+}
+@media (max-width: 380px) {
+  :root { --container-padding: 0.9rem; }
+}
+
 *,
 *::before,
 *::after {
@@ -110,6 +117,10 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  overflow-x: hidden;
 }
 
 html.lenis,
@@ -156,10 +167,10 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.01em;
 }
 
-h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
-h2 { font-size: clamp(2rem, 4vw, 3rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
-h4 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+h1 { font-size: clamp(1.9rem, 5vw, 4rem); }
+h2 { font-size: clamp(1.6rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.25rem, 3vw, 2rem); }
+h4 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); }
 h5 { font-size: 1.125rem; }
 h6 { font-size: 1rem; }
 

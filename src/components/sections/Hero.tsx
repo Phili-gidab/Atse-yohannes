@@ -39,6 +39,9 @@ const Wrap = styled.section`
     min-height: auto;
     padding: 7rem 0 5rem;
   }
+  @media (max-width: 600px) {
+    padding: 6rem 0 3.5rem;
+  }
 `;
 
 const Background = styled.div`
@@ -225,7 +228,13 @@ const Stats = styled(motion.div)`
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   flex-wrap: wrap;
 
-  @media (max-width: 600px) { gap: 1.75rem; }
+  @media (max-width: 600px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+    margin-top: 2.25rem;
+    padding-top: 1.5rem;
+  }
 `;
 
 const Stat = styled.div`
@@ -233,7 +242,7 @@ const Stat = styled.div`
 
   .num {
     font-family: var(--font-heading);
-    font-size: 1.95rem;
+    font-size: clamp(1.55rem, 4.5vw, 1.95rem);
     font-weight: 800;
     color: var(--color-accent-300);
     line-height: 1;

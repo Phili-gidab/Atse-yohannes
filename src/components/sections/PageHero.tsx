@@ -31,7 +31,7 @@ const Wrap = styled.section`
   }
 
   @media (max-width: 700px) {
-    padding-top: 7rem;
+    padding: 6rem 0 2.5rem;
   }
 `;
 
@@ -81,6 +81,8 @@ const Subtitle = styled.p`
   color: rgba(255,255,255,0.85);
   font-size: 1.1rem;
   max-width: 70ch;
+
+  @media (max-width: 600px) { font-size: 0.98rem; line-height: 1.55; }
 `;
 
 export const PageHero = ({ eyebrow, title, subtitle, breadcrumbs }: PageHeroProps) => {

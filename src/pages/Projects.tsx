@@ -90,7 +90,9 @@ const Project = styled(motion.div)`
     flex-direction: column;
     justify-content: center;
 
-    h2 { color: var(--color-primary-900); margin-bottom: 1rem; font-size: 1.65rem; }
+    @media (max-width: 700px) { padding: 1.5rem; }
+
+    h2 { color: var(--color-primary-900); margin-bottom: 1rem; font-size: clamp(1.25rem, 4vw, 1.65rem); }
     .block {
       margin-bottom: 1rem;
       .label {

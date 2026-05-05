@@ -9,6 +9,8 @@ import { DONATION_TIERS } from '../data/content';
 
 const Section = styled.section`
   padding: 5rem 0;
+
+  @media (max-width: 700px) { padding: 2.5rem 0 3.5rem; }
 `;
 
 const Container = styled.div`
@@ -24,6 +26,7 @@ const Layout = styled.div`
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
 `;
 
@@ -156,6 +159,12 @@ const Sidebar = styled.div`
   color: white;
   padding: 2.25rem;
   border-radius: 22px;
+
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+    border-radius: 18px;
+    position: static;
+  }
 
   h3 { color: white; margin-bottom: 1rem; font-size: 1.35rem; }
 
