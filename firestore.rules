@@ -1,0 +1,123 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthed() {
+      return request.auth != null;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return isAuthed() &&
+        (userDoc().role == 'admin' || userDoc().role == 'super_admin');
+    }
+
+    function isMember() {
+      return isAuthed() &&
+        (userDoc().role == 'member' || isAdmin());
+    }
+
+    function isOwner(userId) {
+      return isAuthed() && request.auth.uid == userId;
+    }
+
+    function bootstrapDone() {
+      return exists(/databases/$(database)/documents/system/bootstrap);
+    }
+
+    // ---------- Users ----------
+    // Users can create their own doc on signup; only the owner or an admin can update.
+    // Role changes are restricted to admins. EXCEPT: when bootstrap has not happened
+    // yet, the very first user is allowed to set their own role to super_admin via
+    // /admin/setup. After that, the bootstrap doc exists and this special case turns off.
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId)
+        && request.resource.data.role in ['guest', 'member'];
+      allow update: if (isOwner(userId)
+                        && request.resource.data.role == resource.data.role)
+                      || isAdmin()
+                      || (isOwner(userId)
+                          && !bootstrapDone()
+                          && request.resource.data.role == 'super_admin');
+      allow delete: if isAdmin();
+    }
+
+    // ---------- Bootstrap sentinel ----------
+    // /system/bootstrap is created once, by the first super_admin. After that it
+    // exists forever and disables the bootstrap path above.
+    match /system/{docId} {
+      allow read: if true;
+      allow create: if docId == 'bootstrap'
+                      && isAuthed()
+                      && !bootstrapDone()
+                      && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // ---------- Site content (public read, admin write) ----------
+    match /content/{contentId}        { allow read: if true; allow write: if isAdmin(); }
+    match /programs/{id}              { allow read: if true; allow write: if isAdmin(); }
+    match /projects/{id}              { allow read: if true; allow write: if isAdmin(); }
+    match /news/{id}                  { allow read: if true; allow write: if isAdmin(); }
+    match /events/{id}                { allow read: if true; allow write: if isAdmin(); }
+    match /leadership/{id}            { allow read: if true; allow write: if isAdmin(); }
+    match /chapters/{id}              { allow read: if true; allow write: if isAdmin(); }
+    match /donationTiers/{id}         { allow read: if true; allow write: if isAdmin(); }
+    match /settings/{id}              { allow read: if true; allow write: if isAdmin(); }
+
+    // ---------- Resources Hub ----------
+    // Public can list resources; member-only items are gated client + rule side.
+    match /resources/{id} {
+      allow read: if resource == null
+                    || resource.data.visibility == 'public'
+                    || (resource.data.visibility == 'members' && isMember());
+      allow write: if isAdmin();
+    }
+
+    // ---------- Donations ----------
+    // Donor wall is public read; donations are written by Cloud Functions only.
+    match /donations/{id} {
+      allow read: if true;
+      allow create, update, delete: if false;
+    }
+
+    // ---------- Membership applications ----------
+    match /membershipApplications/{id} {
+      allow read: if isAdmin()
+                    || (isAuthed() && resource.data.userId == request.auth.uid);
+      allow create: if isAuthed()
+                      && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // ---------- Members directory (public read, opt-in via member doc) ----------
+    match /members/{memberId} {
+      allow read: if true;
+      allow create, update: if isOwner(memberId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ---------- Event RSVPs ----------
+    match /events/{eventId}/rsvps/{rsvpId} {
+      allow read: if isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // ---------- Contact / Newsletter ----------
+    match /contactSubmissions/{id} {
+      allow read: if isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+    match /newsletterSubscriptions/{id} {
+      allow read: if isAdmin();
+      allow create: if true;
+      allow update, delete: if isAdmin();
+    }
+  }
+}

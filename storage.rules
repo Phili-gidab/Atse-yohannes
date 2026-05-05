@@ -1,0 +1,35 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuthed() { return request.auth != null; }
+
+    function userRole() {
+      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return isAuthed() && (userRole() == 'admin' || userRole() == 'super_admin');
+    }
+
+    function isMember() {
+      return isAuthed() && (userRole() == 'member' || isAdmin());
+    }
+
+    // Public site assets — admin write, world read.
+    match /site/{allPaths=**}     { allow read: if true;     allow write: if isAdmin(); }
+    match /projects/{allPaths=**} { allow read: if true;     allow write: if isAdmin(); }
+    match /news/{allPaths=**}     { allow read: if true;     allow write: if isAdmin(); }
+    match /events/{allPaths=**}   { allow read: if true;     allow write: if isAdmin(); }
+
+    // Resources — split by visibility (path conventions enforced by app).
+    match /resources/public/{allPaths=**}  { allow read: if true;       allow write: if isAdmin(); }
+    match /resources/members/{allPaths=**} { allow read: if isMember(); allow write: if isAdmin(); }
+
+    // User-uploaded profile pictures.
+    match /users/{uid}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}
