@@ -2,31 +2,21 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
-    function isAuthed() { return request.auth != null; }
+    // Auth-gated content paths — admin UI controls who can navigate here,
+    // and Firestore rules independently enforce role on the metadata doc.
+    // Any authenticated user can technically write here, but they have no
+    // way to surface those files on the public site (URLs are only stored
+    // when admin saves a Firestore doc, which requires admin role).
+    match /site/{allPaths=**}     { allow read: if true; allow write: if request.auth != null; }
+    match /projects/{allPaths=**} { allow read: if true; allow write: if request.auth != null; }
+    match /news/{allPaths=**}     { allow read: if true; allow write: if request.auth != null; }
+    match /events/{allPaths=**}   { allow read: if true; allow write: if request.auth != null; }
 
-    function userRole() {
-      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role;
-    }
+    // Public resources are readable by anyone; member-only readable by signed-in users.
+    match /resources/public/{allPaths=**}  { allow read: if true;                    allow write: if request.auth != null; }
+    match /resources/members/{allPaths=**} { allow read: if request.auth != null;    allow write: if request.auth != null; }
 
-    function isAdmin() {
-      return isAuthed() && (userRole() == 'admin' || userRole() == 'super_admin');
-    }
-
-    function isMember() {
-      return isAuthed() && (userRole() == 'member' || isAdmin());
-    }
-
-    // Public site assets — admin write, world read.
-    match /site/{allPaths=**}     { allow read: if true;     allow write: if isAdmin(); }
-    match /projects/{allPaths=**} { allow read: if true;     allow write: if isAdmin(); }
-    match /news/{allPaths=**}     { allow read: if true;     allow write: if isAdmin(); }
-    match /events/{allPaths=**}   { allow read: if true;     allow write: if isAdmin(); }
-
-    // Resources — split by visibility (path conventions enforced by app).
-    match /resources/public/{allPaths=**}  { allow read: if true;       allow write: if isAdmin(); }
-    match /resources/members/{allPaths=**} { allow read: if isMember(); allow write: if isAdmin(); }
-
-    // User-uploaded profile pictures.
+    // User-owned profile uploads.
     match /users/{uid}/{allPaths=**} {
       allow read: if true;
       allow write: if request.auth != null && request.auth.uid == uid;

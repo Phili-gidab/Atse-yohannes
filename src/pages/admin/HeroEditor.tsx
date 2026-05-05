@@ -98,6 +98,11 @@ const Form = styled.form`
   }
 `;
 
+// The public Hero falls back to this image if Firestore has no backgroundImage
+// set. Mirroring the same default here so the editor preview matches what
+// visitors actually see, even before any image has been explicitly chosen.
+const DEFAULT_HERO_IMAGE = '/2e595e1316ac68a639018427a63548ff.jpg';
+
 export const HeroEditor = () => {
   const qc = useQueryClient();
   const [data, setData] = useState<HeroDoc>({
@@ -106,7 +111,7 @@ export const HeroEditor = () => {
     subtext: HERO.subtext,
     primaryCta: { ...HERO.primaryCta },
     secondaryCta: { ...HERO.secondaryCta },
-    backgroundImage: '',
+    backgroundImage: DEFAULT_HERO_IMAGE,
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
