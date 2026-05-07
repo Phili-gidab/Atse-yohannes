@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import {
@@ -307,7 +308,8 @@ const Fade = styled.div<{ $side: 'left' | 'right' }>`
 const LightboxWrap = styled(motion.div)`
   position: fixed;
   inset: 0;
-  z-index: 200;
+  /* Sits above the public Header (z-index 100) and the mobile menu scrim. */
+  z-index: 1000;
   display: grid;
   place-items: center;
   padding: clamp(0.75rem, 4vw, 3.5rem);
@@ -370,23 +372,30 @@ const Counter = styled.div`
 
 const CloseBtn = styled.button`
   position: absolute;
-  top: clamp(0.75rem, 3vw, 1.5rem);
-  right: clamp(0.75rem, 3vw, 1.5rem);
-  z-index: 4;
-  width: 44px;
-  height: 44px;
+  top: clamp(0.85rem, 3vw, 1.5rem);
+  right: clamp(0.85rem, 3vw, 1.5rem);
+  z-index: 6;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.18);
   background: var(--color-accent-400);
   color: var(--color-primary-950);
   cursor: pointer;
   display: grid;
   place-items: center;
-  transition: transform 0.25s ease, background 0.25s ease;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 
   &:hover {
     background: var(--color-accent-300);
-    transform: scale(1.08);
+    transform: scale(1.08) rotate(90deg);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent-300);
+    outline-offset: 3px;
   }
 `;
 
@@ -538,18 +547,24 @@ export const Gallery = () => {
         <Fade $side="right" />
       </Marquees>
 
-      <AnimatePresence>
-        {active !== null && (
-          <Lightbox
-            item={items[active]}
-            index={active}
-            total={items.length}
-            onClose={close}
-            onPrev={() => navigate(-1)}
-            onNext={() => navigate(1)}
-          />
-        )}
-      </AnimatePresence>
+      {/* Portal so the lightbox escapes the section's isolation: isolate
+          stacking context — otherwise the public Header (z-index 100) would
+          render above the close button. */}
+      {createPortal(
+        <AnimatePresence>
+          {active !== null && (
+            <Lightbox
+              item={items[active]}
+              index={active}
+              total={items.length}
+              onClose={close}
+              onPrev={() => navigate(-1)}
+              onNext={() => navigate(1)}
+            />
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </Wrap>
   );
 };
@@ -644,8 +659,8 @@ const Lightbox = ({ item, index, total, onClose, onPrev, onNext }: LightboxProps
         <span className="total">{String(total).padStart(2, '0')}</span>
       </Counter>
 
-      <CloseBtn type="button" onClick={onClose} aria-label="Close">
-        <X size={18} strokeWidth={2.4} />
+      <CloseBtn type="button" onClick={onClose} aria-label="Close gallery">
+        <X size={22} strokeWidth={2.6} />
       </CloseBtn>
 
       <LightboxStage>
