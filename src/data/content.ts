@@ -366,3 +366,44 @@ export const VALUES: Value[] = [
 ];
 
 export const OUR_STORY = `Atse Yohannes Alumni Association (AYAA) was established on January 11, 2003, by a group of alumni who recognized the growing challenges faced by their former school. Over time, student enrollment increased significantly while resources and funding per student declined. Despite these challenges, students and teachers continued their work under difficult conditions. AYAA was created to provide a structured way for alumni and supporters to contribute toward improving the school's learning environment and opportunities.`;
+
+// Gallery shown on the homepage. Sized for ~12–18 items so three marquee
+// rows have enough variety. Each item carries an alt (used as caption in the
+// lightbox), an optional tag pill, and an optional width (narrow/normal/wide).
+export interface GalleryDoc {
+  eyebrow: string;
+  headline: string;
+  accent: string;
+  subtext: string;
+  items: Array<{
+    src: string;
+    alt: string;
+    tag?: string;
+    width?: 'narrow' | 'normal' | 'wide';
+  }>;
+}
+
+export const GALLERY: GalleryDoc = {
+  eyebrow: 'Visual Stories',
+  headline: 'Moments That Make',
+  accent: 'AYAA',
+  subtext:
+    'A collective archive of reunions, classrooms, fundraisers, and the people behind every milestone — captured in motion.',
+  items: [
+    { src: '/0a1bac7e0501e2f2e22a75edf85d970e.jpg', alt: 'Alumni gathering at Atse Yohannes School', tag: 'Community', width: 'wide' },
+    { src: '/f249a1bcaf8003267d8e314ad15be36c.jpg', alt: 'Memorial Day 5K Run participants', tag: 'Fundraiser', width: 'normal' },
+    { src: '/646105fc688125e35c9eb7fd3ae258f5.jpg', alt: 'AYAA leadership address at school event', tag: 'Leadership', width: 'normal' },
+    { src: '/68f2ee741ffb2feedf27a150f6a1542f.jpg', alt: 'Library Media Center under construction', tag: 'Project', width: 'wide' },
+    { src: '/38f9f4701653c2ba8bd7f936f1ef4d46.jpg', alt: 'Family at the Memorial Day Run', tag: 'Reunion', width: 'normal' },
+    { src: '/f3a668989c3161e440ffaccdc2e6da0f.jpg', alt: 'Alumni applauding at school event', tag: 'Community', width: 'normal' },
+    { src: '/0d924c001691b32627d0774c49800d5d.jpg', alt: 'Students in the classroom', tag: 'Education', width: 'wide' },
+    { src: '/2e595e1316ac68a639018427a63548ff.jpg', alt: 'School building exterior', tag: 'Campus', width: 'normal' },
+    { src: '/4085c6dd600ad91ee27cdcd5155cb905.jpg', alt: 'Alumni reunion photograph', tag: 'Reunion', width: 'normal' },
+    { src: '/63b490524bb814c71d6350e6eb124c24.jpg', alt: 'Community fundraiser highlights', tag: 'Fundraiser', width: 'wide' },
+    { src: '/87db41893fa5b6a01db3496dcd01eb45.jpg', alt: 'Group portrait from a school visit', tag: 'Visit', width: 'normal' },
+    { src: '/a355a371ac73c1b6b23ba867aec6ae33.jpg', alt: 'Volunteers preparing for the event', tag: 'Volunteers', width: 'normal' },
+    { src: '/c97036e47ccc734f9baabc10f64ff5f4.jpg', alt: 'Project handover celebration', tag: 'Project', width: 'wide' },
+    { src: '/e7d28338f9e99d0af4aaf9b86c14e5da.jpg', alt: 'Student smiling during program', tag: 'Students', width: 'normal' },
+    { src: '/ed89e7f94d28c0ec6f956571176da0a8.jpg', alt: 'Alumni speaking at the podium', tag: 'Leadership', width: 'normal' },
+  ],
+};

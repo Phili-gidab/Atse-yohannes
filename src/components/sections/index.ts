@@ -8,3 +8,4 @@ export { AlumniNetwork } from './AlumniNetwork';
 export { LatestUpdates } from './LatestUpdates';
 export { FinalCTA } from './FinalCTA';
 export { CommunityGallery } from './CommunityGallery';
+export { Gallery } from './Gallery';

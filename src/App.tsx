@@ -34,6 +34,9 @@ const HeroEditor = lazy(() =>
 const SettingsEditor = lazy(() =>
   import('./pages/admin/SettingsEditor').then((m) => ({ default: m.SettingsEditor }))
 );
+const GalleryEditor = lazy(() =>
+  import('./pages/admin/GalleryEditor').then((m) => ({ default: m.GalleryEditor }))
+);
 const ApplicationsManager = lazy(() =>
   import('./pages/admin/ApplicationsManager').then((m) => ({ default: m.ApplicationsManager }))
 );
@@ -121,6 +124,7 @@ const AnimatedRoutes = () => {
           >
             <Route index element={<Dashboard />} />
             <Route path="hero" element={<HeroEditor />} />
+            <Route path="gallery" element={<GalleryEditor />} />
             <Route path="settings" element={<SettingsEditor />} />
             <Route path="applications" element={<ApplicationsManager />} />
             <Route path="members" element={<MembersManager />} />

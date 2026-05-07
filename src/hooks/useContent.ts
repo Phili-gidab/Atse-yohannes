@@ -42,3 +42,6 @@ export const useResources = () =>
 
 export const useImpactMetrics = () =>
   useQuery({ queryKey: ['impactMetrics'], queryFn: () => contentService.getImpactMetrics() });
+
+export const useGallery = () =>
+  useQuery({ queryKey: ['gallery'], queryFn: () => contentService.getGallery() });

@@ -4,7 +4,7 @@ import {
   Programs,
   ImpactStory,
   ProjectsOverview,
-  CommunityGallery,
+  Gallery,
   GetInvolved,
   AlumniNetwork,
   LatestUpdates,
@@ -19,7 +19,7 @@ export const Home = () => {
       <Programs />
       <ImpactStory />
       <ProjectsOverview />
-      <CommunityGallery />
+      <Gallery />
       <GetInvolved />
       <AlumniNetwork />
       <LatestUpdates />
