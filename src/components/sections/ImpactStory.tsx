@@ -25,7 +25,39 @@ const Container = styled.div`
   }
 `;
 
-const ImageWrap = styled(motion.div)`
+const ImageFrame = styled(motion.div)`
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 18px -18px -18px 18px;
+    border-radius: 24px;
+    background:
+      linear-gradient(135deg, var(--color-secondary-500), var(--color-primary-700));
+    opacity: 0.18;
+    z-index: -1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -10px 10px 10px -10px;
+    border-radius: 24px;
+    border: 1.5px dashed var(--color-accent-400);
+    opacity: 0.45;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    &::before { inset: 12px -12px -12px 12px; }
+    &::after { inset: -6px 6px 6px -6px; }
+  }
+`;
+
+const ImageWrap = styled.div`
   position: relative;
   border-radius: 24px;
   overflow: hidden;
@@ -36,7 +68,10 @@ const ImageWrap = styled(motion.div)`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.7s ease;
   }
+
+  &:hover img { transform: scale(1.03); }
 
   &::after {
     content: '';
@@ -58,6 +93,7 @@ const ImageWrap = styled(motion.div)`
     align-items: center;
     justify-content: center;
     box-shadow: var(--shadow-xl);
+    z-index: 2;
   }
 `;
 
@@ -94,14 +130,16 @@ export const ImpactStory = () => {
   return (
     <Wrap>
       <Container ref={ref}>
-        <ImageWrap
+        <ImageFrame
           initial={{ opacity: 0, x: -30 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <img src={STORY.image} alt={STORY.title} loading="lazy" />
-          <span className="quote-mark"><Quote size={28} /></span>
-        </ImageWrap>
+          <ImageWrap>
+            <img src={STORY.image} alt={STORY.title} loading="lazy" />
+            <span className="quote-mark"><Quote size={28} /></span>
+          </ImageWrap>
+        </ImageFrame>
         <Content
           initial={{ opacity: 0, x: 30 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}

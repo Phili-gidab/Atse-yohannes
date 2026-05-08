@@ -32,9 +32,11 @@ const Grid = styled.div`
 `;
 
 const Item = styled(motion.div)`
+  position: relative;
   text-align: center;
-  padding: 1rem;
+  padding: 1rem 1rem 1.25rem;
   border-right: 1px solid var(--color-neutral-100);
+  transition: transform 0.3s ease;
 
   &:last-of-type { border-right: none; }
 
@@ -47,12 +49,31 @@ const Item = styled(motion.div)`
     background-clip: text;
     color: transparent;
     line-height: 1;
+    transition: transform 0.3s ease;
   }
   .lbl {
     margin-top: 0.6rem;
     color: var(--color-neutral-600);
     font-size: 0.92rem;
     font-weight: 500;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0.35rem;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--color-accent-400), var(--color-accent-600));
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover {
+    .num { transform: translateY(-2px) scale(1.04); }
+    &::after { width: 36px; }
   }
 
   @media (max-width: 900px) {

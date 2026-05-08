@@ -83,10 +83,23 @@ const Banner = styled(motion.div)`
     .row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 0.85rem;
       color: rgba(255,255,255,0.85);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
       font-weight: 600;
+    }
+    .pct {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(245, 183, 29, 0.18);
+      border: 1px solid rgba(245, 183, 29, 0.4);
+      color: var(--color-accent-300);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
     }
     .bar {
       width: 100%;
@@ -94,12 +107,14 @@ const Banner = styled(motion.div)`
       background: rgba(255,255,255,0.12);
       border-radius: 999px;
       overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.18);
 
       .fill {
         height: 100%;
         background: linear-gradient(90deg, var(--color-accent-400), var(--color-accent-600));
         border-radius: 999px;
         transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 0 12px rgba(245, 183, 29, 0.5);
       }
     }
   }
@@ -133,8 +148,8 @@ export const FinalCTA = () => {
           </div>
           <div className="progress">
             <div className="row">
-              <span>${raised.toLocaleString()} raised</span>
-              <span>Goal: ${goal.toLocaleString()}</span>
+              <span>${raised.toLocaleString()} raised <span style={{ opacity: 0.6 }}>· of ${goal.toLocaleString()} goal</span></span>
+              <span className="pct">{pct}% funded</span>
             </div>
             <div className="bar">
               <div className="fill" style={{ width: inView ? `${pct}%` : '0%' }} />

@@ -61,6 +61,24 @@ const Card = styled(MotionLink)`
   position: relative;
   overflow: hidden;
 
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--color-secondary-500),
+      var(--color-accent-500),
+      var(--color-primary-500)
+    );
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   .icon {
     width: 52px;
     height: 52px;
@@ -100,6 +118,7 @@ const Card = styled(MotionLink)`
     border-color: var(--color-secondary-300);
     box-shadow: 0 24px 48px -16px rgba(13, 148, 136, 0.15);
 
+    &::before { transform: scaleX(1); }
     .icon {
       background: linear-gradient(135deg, var(--color-secondary-500), var(--color-secondary-700));
       color: white;

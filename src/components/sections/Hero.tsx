@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Heart, Play } from 'lucide-react';
+import { ArrowRight, Heart, Play, ChevronDown } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useHero } from '../../hooks/useContent';
 
@@ -24,6 +24,12 @@ const shimmer = keyframes`
 const pulse = keyframes`
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.06); }
+`;
+
+const scrollHint = keyframes`
+  0% { transform: translate(-50%, 0); opacity: 0.7; }
+  50% { transform: translate(-50%, 6px); opacity: 1; }
+  100% { transform: translate(-50%, 0); opacity: 0.7; }
 `;
 
 const Wrap = styled.section`
@@ -148,12 +154,19 @@ const Headline = styled(motion.h1)`
 
   .accent {
     display: inline-block;
-    background: linear-gradient(120deg, var(--color-accent-300), #ffd66b 50%, var(--color-accent-500));
-    background-size: 200% auto;
+    background: linear-gradient(
+      100deg,
+      var(--color-accent-400) 0%,
+      #ffe28a 25%,
+      var(--color-accent-300) 50%,
+      #ffe28a 75%,
+      var(--color-accent-500) 100%
+    );
+    background-size: 220% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: ${shimmer} 4s linear infinite;
+    animation: ${shimmer} 5s linear infinite;
   }
 `;
 
@@ -219,43 +232,37 @@ const PlayIcon = styled.span`
   animation: ${pulse} 2.2s ease-in-out infinite;
 `;
 
-const Stats = styled(motion.div)`
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-top: 3.25rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  flex-wrap: wrap;
+const ScrollCue = styled.div`
+  position: absolute;
+  bottom: 2.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: ${scrollHint} 2.4s ease-in-out infinite;
 
-  @media (max-width: 600px) {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem 1rem;
-    margin-top: 2.25rem;
-    padding-top: 1.5rem;
+  .chev {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(4px);
   }
-`;
 
-const Stat = styled.div`
-  text-align: center;
-
-  .num {
-    font-family: var(--font-heading);
-    font-size: clamp(1.55rem, 4.5vw, 1.95rem);
-    font-weight: 800;
-    color: var(--color-accent-300);
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-  .lbl {
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.72);
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
-    margin-top: 0.45rem;
-    font-weight: 600;
-  }
+  @media (max-width: 600px) { display: none; }
 `;
 
 export const Hero = () => {
@@ -315,30 +322,12 @@ export const Hero = () => {
             {hero?.secondaryCta.label}
           </SecondaryButton>
         </Actions>
-
-        <Stats
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.55 }}
-        >
-          <Stat>
-            <div className="num">2003</div>
-            <div className="lbl">Established</div>
-          </Stat>
-          <Stat>
-            <div className="num">3</div>
-            <div className="lbl">Global Chapters</div>
-          </Stat>
-          <Stat>
-            <div className="num">$10K+</div>
-            <div className="lbl">Funds Raised</div>
-          </Stat>
-          <Stat>
-            <div className="num">8M+</div>
-            <div className="lbl">Birr for LMC</div>
-          </Stat>
-        </Stats>
       </Container>
+
+      <ScrollCue aria-hidden="true">
+        Scroll
+        <span className="chev"><ChevronDown size={14} /></span>
+      </ScrollCue>
     </Wrap>
   );
 };

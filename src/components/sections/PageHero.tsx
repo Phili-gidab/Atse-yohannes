@@ -71,7 +71,7 @@ const Eyebrow = styled.span`
 
 const Title = styled.h1`
   color: white;
-  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-size: clamp(1.85rem, 5.5vw, 3.4rem);
   font-weight: 800;
   margin-bottom: 0.85rem;
   letter-spacing: -0.02em;

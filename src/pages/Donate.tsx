@@ -21,22 +21,22 @@ const Container = styled.div`
 
 const Layout = styled.div`
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 4rem;
 
   @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2.5rem;
   }
 `;
 
 const TiersList = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 
-  @media (max-width: 540px) { grid-template-columns: 1fr; }
+  @media (max-width: 540px) { grid-template-columns: minmax(0, 1fr); }
 `;
 
 const Tier = styled(motion.button)<{ $selected: boolean; $featured?: boolean }>`
@@ -51,8 +51,10 @@ const Tier = styled(motion.button)<{ $selected: boolean; $featured?: boolean }>`
   font-family: inherit;
   min-width: 0;
   width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
-  @media (max-width: 460px) { padding: 1.1rem 1.25rem; }
+  @media (max-width: 460px) { padding: 1.1rem 1.15rem; }
 
   ${({ $featured }) =>
     $featured &&
@@ -84,7 +86,7 @@ const Tier = styled(motion.button)<{ $selected: boolean; $featured?: boolean }>`
   .amount {
     font-family: var(--font-heading);
     font-weight: 800;
-    font-size: 1.75rem;
+    font-size: clamp(1.5rem, 5vw, 1.75rem);
     color: var(--color-primary-900);
     margin-bottom: 0.4rem;
     line-height: 1;
@@ -93,6 +95,7 @@ const Tier = styled(motion.button)<{ $selected: boolean; $featured?: boolean }>`
     font-size: 0.85rem;
     color: var(--color-neutral-600);
     line-height: 1.45;
+    overflow-wrap: break-word;
   }
 
   &:hover {
@@ -232,6 +235,7 @@ const Sidebar = styled.div`
 
 const Header = styled.div`
   margin-bottom: 2rem;
+  min-width: 0;
 
   .eyebrow {
     color: var(--color-secondary-600);
@@ -242,7 +246,10 @@ const Header = styled.div`
     margin-bottom: 0.6rem;
     display: inline-block;
   }
-  h2 { margin-bottom: 0.6rem; }
+  h2 {
+    margin-bottom: 0.6rem;
+    font-size: clamp(1.4rem, 5.5vw, 2.25rem);
+  }
   p { color: var(--color-neutral-600); }
 `;
 

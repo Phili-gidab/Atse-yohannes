@@ -111,6 +111,16 @@ const Card = styled(motion(Link))`
     color: var(--color-neutral-600);
     font-size: 0.92rem;
     line-height: 1.55;
+    margin-bottom: 1rem;
+  }
+  .read {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-secondary-700);
+    transition: gap 0.25s ease;
   }
 
   &:hover {
@@ -119,6 +129,7 @@ const Card = styled(motion(Link))`
     border-color: var(--color-secondary-300);
 
     .image img { transform: scale(1.05); }
+    .read { gap: 10px; }
   }
 `;
 
@@ -158,6 +169,7 @@ export const LatestUpdates = () => {
                 </div>
                 <h3>{n.title}</h3>
                 <p>{n.excerpt}</p>
+                <span className="read">Read story <ArrowRight size={14} /></span>
               </div>
             </Card>
           ))}
