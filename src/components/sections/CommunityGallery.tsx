@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+﻿import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Camera, ArrowRight } from 'lucide-react';
@@ -112,7 +112,7 @@ const Tile = styled(motion.div)<{ $col: number; $row: number }>`
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, transparent 35%, rgba(10, 37, 64, 0.78) 100%);
+    background: linear-gradient(180deg, transparent 35%, rgba(30, 58, 138, 0.78) 100%);
     opacity: 0.85;
     transition: opacity 0.35s ease;
   }
@@ -179,7 +179,7 @@ export const CommunityGallery = () => {
             <h2>The People Behind the Mission</h2>
             <p>
               Reunions, fundraisers, project visits, and the everyday community work that brings AYAA
-              alive — across Mekelle, Addis Ababa, and the United States.
+              alive â€” across Mekelle, Addis Ababa, and the United States.
             </p>
           </div>
           <Button to="/news" variant="outline">

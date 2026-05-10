@@ -1,17 +1,17 @@
 /* AYAA Brand Theme — Navy / Teal / Gold */
 :root {
-  /* Primary — Deep Navy */
-  --color-primary-50: #e7edf5;
-  --color-primary-100: #c4d2e6;
-  --color-primary-200: #9eb4d3;
-  --color-primary-300: #7896c0;
-  --color-primary-400: #5a7eb1;
-  --color-primary-500: #2d5a8e;
-  --color-primary-600: #1f4775;
-  --color-primary-700: #15375d;
-  --color-primary-800: #0f2b4a;
-  --color-primary-900: #0a2540;
-  --color-primary-950: #061830;
+  /* Primary — Bright Blue (per client feedback 2026-05-10) */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary-950: #172554;
 
   /* Secondary — Teal */
   --color-secondary-50: #e6fffb;
@@ -86,7 +86,7 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --shadow-premium: 0 32px 64px -12px rgb(10 37 64 / 0.18);
+  --shadow-premium: 0 32px 64px -12px rgb(30 58 138 / 0.18);
 
   /* Transitions */
   --transition-fast: 150ms ease;

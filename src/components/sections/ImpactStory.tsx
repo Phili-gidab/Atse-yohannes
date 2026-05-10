@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+﻿import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Quote } from 'lucide-react';
@@ -77,7 +77,7 @@ const ImageWrap = styled.div`
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, transparent 50%, rgba(10, 37, 64, 0.4) 100%);
+    background: linear-gradient(180deg, transparent 50%, rgba(30, 58, 138, 0.4) 100%);
   }
 
   .quote-mark {
@@ -148,7 +148,7 @@ export const ImpactStory = () => {
           <span className="eyebrow">{STORY.eyebrow}</span>
           <h2>{STORY.title}</h2>
           <p className="body">{STORY.body}</p>
-          <div className="attribution">— {STORY.attribution}</div>
+          <div className="attribution">â€” {STORY.attribution}</div>
           <Button to="/impact" variant="primary">Read More Impact Stories</Button>
         </Content>
       </Container>

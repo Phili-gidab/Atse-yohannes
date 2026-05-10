@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Mail, MapPin, Facebook, Twitter, Linkedin, Youtube, GraduationCap } from 'lucide-react';
+import { Mail, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react';
 import { useOrg } from '../../hooks/useContent';
 import { NewsletterSignup } from '../NewsletterSignup';
 
@@ -54,11 +54,17 @@ const Brand = styled.div`
     width: 44px;
     height: 44px;
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--color-secondary-500), var(--color-secondary-700));
+    overflow: hidden;
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+  }
+  .mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .name {
     font-family: var(--font-heading);
@@ -159,7 +165,9 @@ export const Footer = () => {
         <Grid>
           <div>
             <Brand>
-              <span className="mark"><GraduationCap size={22} /></span>
+              <span className="mark">
+                <img src="/ATAA_logo.jpg" alt="AYAA logo" />
+              </span>
               <span className="name">AYAA</span>
             </Brand>
             <Tagline>

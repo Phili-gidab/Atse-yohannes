@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import styled from '@emotion/styled';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { CheckCircle2, X, AlertCircle } from 'lucide-react';
@@ -12,7 +12,7 @@ interface Props {
 
 const Backdrop = styled.div`
   position: fixed; inset: 0; z-index: 1000;
-  background: rgba(10, 37, 64, 0.6);
+  background: rgba(30, 58, 138, 0.6);
   backdrop-filter: blur(6px);
   display: grid; place-items: center;
   padding: 1rem;
@@ -98,7 +98,7 @@ export const RsvpModal = ({ eventSlug, eventTitle, onClose }: Props) => {
     <Backdrop onClick={onClose}>
       <Modal onClick={(e) => e.stopPropagation()}>
         <button className="close" onClick={onClose} aria-label="Close"><X size={16} /></button>
-        <h2>RSVP — {eventTitle}</h2>
+        <h2>RSVP â€” {eventTitle}</h2>
         <div className="sub">Reserve your spot. We'll email a reminder closer to the date.</div>
 
         {ok ? (
@@ -125,7 +125,7 @@ export const RsvpModal = ({ eventSlug, eventTitle, onClose }: Props) => {
             </div>
             {err && <div className="err"><AlertCircle size={16} /> {err}</div>}
             <button type="submit" disabled={busy}>
-              {busy ? 'Submitting…' : 'Confirm RSVP'}
+              {busy ? 'Submittingâ€¦' : 'Confirm RSVP'}
             </button>
           </form>
         )}

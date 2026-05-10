@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+﻿import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -68,8 +68,8 @@ const Background = styled.div`
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(10, 37, 64, 0.92) 0%,
-      rgba(10, 37, 64, 0.86) 45%,
+      rgba(30, 58, 138, 0.92) 0%,
+      rgba(30, 58, 138, 0.86) 45%,
       rgba(20, 79, 122, 0.82) 100%
     );
     z-index: 1;
@@ -83,7 +83,7 @@ const Overlay = styled.div`
   background:
     radial-gradient(circle at 18% 28%, rgba(20, 184, 166, 0.30), transparent 45%),
     radial-gradient(circle at 82% 22%, rgba(245, 183, 29, 0.18), transparent 50%),
-    radial-gradient(ellipse at center, transparent 0%, rgba(10, 37, 64, 0.35) 100%);
+    radial-gradient(ellipse at center, transparent 0%, rgba(30, 58, 138, 0.35) 100%);
 `;
 
 const Grid = styled.div`

@@ -29,7 +29,7 @@ const variantStyles = (variant: Variant = 'primary') => {
       return `
         background: var(--color-primary-900);
         color: white;
-        &:hover { background: var(--color-primary-800); transform: translateY(-2px); box-shadow: 0 12px 24px rgba(10,37,64,0.25); }
+        &:hover { background: var(--color-primary-800); transform: translateY(-2px); box-shadow: 0 12px 24px rgba(30, 58, 138, 0.25); }
       `;
     case 'secondary':
       return `

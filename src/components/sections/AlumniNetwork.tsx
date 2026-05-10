@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+﻿import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Globe2, MapPin } from 'lucide-react';
@@ -32,7 +32,7 @@ const Wrap = styled.section`
     z-index: -1;
     background:
       radial-gradient(circle at 80% 20%, rgba(20, 184, 166, 0.20), transparent 50%),
-      linear-gradient(180deg, rgba(10, 37, 64, 0.94) 0%, rgba(10, 37, 64, 0.92) 100%);
+      linear-gradient(180deg, rgba(30, 58, 138, 0.94) 0%, rgba(30, 58, 138, 0.92) 100%);
   }
 
   &::after {
@@ -162,7 +162,7 @@ export const AlumniNetwork = () => {
             >
               <div className="top"><MapPin size={12} /> Chapter</div>
               <div className="name">{c.name}</div>
-              <div className="cities">{c.cities.join(' · ')}</div>
+              <div className="cities">{c.cities.join(' Â· ')}</div>
             </Chapter>
           ))}
         </Chapters>

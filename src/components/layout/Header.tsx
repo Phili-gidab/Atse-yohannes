@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,7 +10,6 @@ import {
   Twitter,
   Linkedin,
   Youtube,
-  GraduationCap,
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useOrg } from '../../hooks/useContent';
@@ -99,7 +98,7 @@ const HeaderWrapper = styled.header<{ $scrolled: boolean }>`
   z-index: 100;
   transition: all 0.3s ease;
   background: ${({ $scrolled }) =>
-    $scrolled ? 'white' : 'rgba(10, 37, 64, 0.95)'};
+    $scrolled ? 'white' : 'rgba(30, 58, 138, 0.95)'};
   backdrop-filter: blur(8px);
   box-shadow: ${({ $scrolled }) =>
     $scrolled ? '0 2px 20px rgba(0, 0, 0, 0.08)' : 'none'};
@@ -127,15 +126,21 @@ const Logo = styled(Link)<{ $scrolled: boolean }>`
   color: ${({ $scrolled }) => ($scrolled ? 'var(--color-primary-900)' : 'white')};
 
   .logo-mark {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--color-secondary-500) 0%, var(--color-secondary-700) 100%);
+    overflow: hidden;
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.25);
+  }
+  .logo-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .logo-text {
@@ -327,7 +332,9 @@ export const Header = () => {
       <HeaderWrapper $scrolled={scrolled}>
         <HeaderContainer>
           <Logo to="/" $scrolled={scrolled}>
-            <span className="logo-mark"><GraduationCap size={22} /></span>
+            <span className="logo-mark">
+              <img src="/ATAA_logo.jpg" alt="AYAA logo" />
+            </span>
             <span className="logo-text">
               <span className="logo-title">AYAA</span>
               <span className="logo-sub">Atse Yohannes Alumni</span>
