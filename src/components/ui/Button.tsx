@@ -97,6 +97,7 @@ interface ButtonProps extends BaseProps, Omit<ButtonHTMLAttributes<HTMLButtonEle
   children: ReactNode;
   to?: string;
   href?: string;
+  external?: boolean;
 }
 
 export const Button = ({
@@ -106,6 +107,7 @@ export const Button = ({
   fullWidth,
   to,
   href,
+  external,
   ...rest
 }: ButtonProps) => {
   if (to) {
@@ -117,7 +119,13 @@ export const Button = ({
   }
   if (href) {
     return (
-      <StyledA href={href} $variant={variant} $size={size} $fullWidth={fullWidth}>
+      <StyledA
+        href={href}
+        $variant={variant}
+        $size={size}
+        $fullWidth={fullWidth}
+        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : null)}
+      >
         {children}
       </StyledA>
     );

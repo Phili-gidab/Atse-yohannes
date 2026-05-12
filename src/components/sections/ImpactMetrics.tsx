@@ -22,12 +22,12 @@ const Container = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 
   @media (max-width: 900px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 `;
 
@@ -81,13 +81,9 @@ const Item = styled(motion.div)`
     border-bottom: 1px solid var(--color-neutral-100);
     padding-bottom: 1.25rem;
 
-    &:nth-of-type(odd) {
-      border-right: 1px solid var(--color-neutral-100);
-      border-bottom: 1px solid var(--color-neutral-100);
-    }
-    &:nth-last-of-type(-n+2) {
+    &:last-of-type {
       border-bottom: none;
-      padding-bottom: 1rem;
+      padding-bottom: 0;
     }
   }
 `;

@@ -1,4 +1,5 @@
 export { Hero } from './Hero';
+export { ReunionFlyer } from './ReunionFlyer';
 export { ImpactMetrics } from './ImpactMetrics';
 export { Programs } from './Programs';
 export { ImpactStory } from './ImpactStory';

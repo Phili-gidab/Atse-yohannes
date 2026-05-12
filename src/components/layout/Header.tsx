@@ -126,9 +126,9 @@ const Logo = styled(Link)<{ $scrolled: boolean }>`
   color: ${({ $scrolled }) => ($scrolled ? 'var(--color-primary-900)' : 'white')};
 
   .logo-mark {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
     overflow: hidden;
     background: white;
     display: flex;
@@ -151,14 +151,14 @@ const Logo = styled(Link)<{ $scrolled: boolean }>`
   .logo-title {
     font-family: var(--font-heading);
     font-weight: 800;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     letter-spacing: 0.5px;
   }
   .logo-sub {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    opacity: 0.8;
+    opacity: 0.85;
   }
 
   @media (max-width: 480px) {

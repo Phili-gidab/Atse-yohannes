@@ -35,11 +35,13 @@ export const HERO: {
   secondaryCta: { label: 'Join the Network', href: '/get-involved' },
 };
 
+// Values intentionally placeholder ("—") until AYAA confirms current totals.
+// Update the value strings here (or via the admin Settings editor) once
+// accurate fundraising and equipment numbers are available.
 export const IMPACT_METRICS = [
-  { value: '10,100+', label: 'USD Raised in Campaigns', suffix: '' },
-  { value: '8M+', label: 'Birr for Library Media Center', suffix: '' },
-  { value: '20', label: 'Computers Funded', suffix: '' },
-  { value: '4+', label: 'Major Infrastructure Projects', suffix: '' },
+  { value: '—', label: 'USD Raised in Campaigns', suffix: '' },
+  { value: '—', label: 'Birr for Library Media Center', suffix: '' },
+  { value: '—', label: 'Computers Funded', suffix: '' },
 ];
 
 export interface Program {
@@ -87,12 +89,34 @@ export const PROGRAMS: Program[] = [
   },
 ];
 
-export const PROJECTS = [
+export interface ProjectSeed {
+  slug: string;
+  title: string;
+  status: string;
+  image: string;
+  // Optional narrative shown above "The Problem". Use it to give context that
+  // helps readers feel the meaning of a project (e.g. why female restrooms
+  // mattered, the history of the fence, etc.). Pulled from the previous
+  // AYAA site / client narrative.
+  story?: string;
+  problem: string;
+  action: string;
+  impact: string[];
+  // Optional external campaign link (e.g. GoFundMe). When present, the
+  // Projects page renders a CTA pointing here instead of /donate.
+  externalLink?: { label: string; href: string };
+}
+
+export const PROJECTS: ProjectSeed[] = [
   {
-    slug: 'girls-bathroom',
-    title: 'Girls Bathroom Project',
+    slug: 'girls-restrooms',
+    title: 'Construction of Restrooms for Female Students',
     status: 'Completed',
-    image: '/2e595e1316ac68a639018427a63548ff.jpg',
+    // Photo placeholder — original showed an unrelated library image. AYAA
+    // will provide before/after photos of the restroom project to swap in.
+    image: '/c97036e47ccc734f9baabc10f64ff5f4.jpg',
+    story:
+      'For years, female students at Atse Yohannes School had no dedicated restroom facilities — a daily indignity that affected attendance, comfort, and the message the school sent to its girls. AYAA prioritized this project after hearing from students and teachers, and constructed proper restrooms so female students could focus on learning without that barrier.',
     problem:
       'The school had no bathroom facilities for female students, creating serious challenges and affecting attendance.',
     action: 'AYAA constructed dedicated bathrooms for female students.',
@@ -106,7 +130,10 @@ export const PROJECTS = [
     slug: 'school-fence',
     title: 'School Fence Renovation',
     status: 'Completed',
+    // Before/after photos pending from AYAA.
     image: '/Hero-Image.jpg',
+    story:
+      'The old perimeter fence had fallen into disrepair — animals wandered onto school grounds, the campus looked neglected, and security was a real concern. AYAA funded a full renovation so students learn in a safer, cleaner space the community can take pride in.',
     problem:
       'The old fence was damaged, allowing animals into the school and affecting safety and cleanliness.',
     action: 'AYAA renovated the school fence.',
@@ -155,6 +182,31 @@ export const PROJECTS = [
     action:
       'AYAA launched a fundraising campaign to equip computer labs and improve digital access.',
     impact: ['$10,100 raised', '20 computers funded', 'Computer labs equipped'],
+  },
+  {
+    slug: 'mental-health',
+    title: 'Mental Health Project',
+    status: 'Active Campaign',
+    // Image placeholder until AYAA provides a representative photo.
+    image: '/e7d28338f9e99d0af4aaf9b86c14e5da.jpg',
+    // Short description and GoFundMe link to be supplied by AYAA — placeholder
+    // copy is intentionally generic so it can be safely shown until updated.
+    story:
+      'Coming soon — full project description provided by AYAA, including the goals of the Mental Health initiative and how supporters can contribute.',
+    problem:
+      'Students at Atse Yohannes School face mental health challenges that affect learning, attendance, and well-being, with very limited support available.',
+    action:
+      'AYAA is launching a Mental Health initiative to bring counseling, awareness, and support resources to students. Detailed program description to be added.',
+    impact: [
+      'Improved student well-being',
+      'Stronger support for at-risk students',
+      'Reduced stigma around mental health',
+    ],
+    externalLink: {
+      label: 'Support on GoFundMe',
+      // TODO: replace with real GoFundMe URL once AYAA provides it.
+      href: '#',
+    },
   },
 ];
 
@@ -214,6 +266,26 @@ export const LEADERSHIP = [
     role: 'Treasurer',
     initials: 'AD',
   },
+  { name: 'Daniel Hadera', role: 'Board Member', initials: 'DH' },
+  { name: 'Gessese Gebreselasse', role: 'Board Member', initials: 'GG' },
+  { name: 'Zenebe Gebre', role: 'Board Member', initials: 'ZG' },
+  { name: 'Ashenafi Desta', role: 'Board Member', initials: 'AsD' },
+];
+
+// Photos pending — AYAA will provide updated headshots; in the meantime we
+// render initials avatars to match the leadership grid.
+export const ADVISORS = [
+  { name: 'Asfawossen Mokonnen', role: 'Advisor', initials: 'AM' },
+  { name: 'Zewdi Germai', role: 'Advisor', initials: 'ZG' },
+  { name: 'Alemnesh Hagos', role: 'Advisor', initials: 'AH' },
+  { name: 'Dr. Aregay Germay', role: 'Advisor', initials: 'AG' },
+  { name: 'Dr. Hailemaryam Selassie', role: 'Advisor', initials: 'HS' },
+];
+
+// Posthumous remembrance — pictures pending a higher-quality source.
+export const IN_MEMORIAM = [
+  { name: 'Gebre Hadera', role: 'In Loving Memory', initials: 'GH' },
+  { name: 'Fessehaye Hagos', role: 'In Loving Memory', initials: 'FH' },
 ];
 
 export const COMMITTEES = [
@@ -225,9 +297,9 @@ export const COMMITTEES = [
 ];
 
 export const CHAPTERS = [
-  { name: 'United States', cities: ['Washington DC', 'Dallas', 'Seattle'] },
-  { name: 'Mekelle, Tigray', cities: ['Mekelle Chapter'] },
-  { name: 'Addis Ababa', cities: ['Addis Ababa Chapter'] },
+  { name: 'AYAA United States', cities: ['Washington DC', 'Dallas', 'Seattle'] },
+  { name: 'AYAA Mekelle', cities: ['Mekelle, Tigray'] },
+  { name: 'AYAA Addis Ababa', cities: ['Addis Ababa'] },
 ];
 
 export const NEWS = [

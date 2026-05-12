@@ -2,7 +2,15 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { PageHero } from '../components/sections/PageHero';
-import { HOW_WE_WORK, VALUES as VALUES_SEED, LEADERSHIP as LEADERSHIP_SEED, COMMITTEES as COMMITTEES_SEED } from '../data/content';
+import {
+  HOW_WE_WORK,
+  VALUES as VALUES_SEED,
+  LEADERSHIP as LEADERSHIP_SEED,
+  COMMITTEES as COMMITTEES_SEED,
+  ADVISORS,
+  IN_MEMORIAM,
+  CHAPTERS,
+} from '../data/content';
 import { useOrg, useOurStory, useLeadership } from '../hooks/useContent';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { getIcon } from '../utils/iconMap';
@@ -238,6 +246,55 @@ const Committees = styled.div`
   }
 `;
 
+const SubGroupTitle = styled.h3`
+  text-align: center;
+  font-family: var(--font-heading);
+  color: var(--color-primary-900);
+  font-size: 1.15rem;
+  margin: 3rem 0 1.5rem;
+  letter-spacing: 0.4px;
+
+  &:first-of-type { margin-top: 0; }
+`;
+
+const ChaptersGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 900px) { grid-template-columns: 1fr; }
+`;
+
+const ChapterCard = styled(motion.div)`
+  background: white;
+  border-radius: 18px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+  border-top: 4px solid var(--color-secondary-500);
+
+  h3 {
+    color: var(--color-primary-900);
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  li {
+    background: var(--color-neutral-50);
+    color: var(--color-primary-800);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+`;
+
 const SectionHeader = styled.div`
   text-align: center;
   max-width: 720px;
@@ -362,15 +419,17 @@ export const About = () => {
           <SectionHeader>
             <span className="eyebrow">Leadership</span>
             <h2>Meet the AYAA Team</h2>
-            <p>A dedicated board of alumni leading the work and committees driving change.</p>
+            <p>A dedicated board of alumni, advisors, and committees driving the work forward.</p>
           </SectionHeader>
+
+          <SubGroupTitle>Board of Members</SubGroupTitle>
           <LeadershipGrid ref={r3}>
             {leadership.map((p, i) => (
               <Leader
                 key={p.name}
                 initial={{ opacity: 0, y: 20 }}
                 animate={v3 ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
               >
                 <div className="avatar"><span>{p.initials}</span></div>
                 <div className="body">
@@ -380,6 +439,43 @@ export const About = () => {
               </Leader>
             ))}
           </LeadershipGrid>
+
+          <SubGroupTitle>Board of Advisors</SubGroupTitle>
+          <LeadershipGrid>
+            {ADVISORS.map((p, i) => (
+              <Leader
+                key={p.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={v3 ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+              >
+                <div className="avatar"><span>{p.initials}</span></div>
+                <div className="body">
+                  <div className="name">{p.name}</div>
+                  <div className="role">{p.role}</div>
+                </div>
+              </Leader>
+            ))}
+          </LeadershipGrid>
+
+          <SubGroupTitle>Posthumously, In Memoriam</SubGroupTitle>
+          <LeadershipGrid>
+            {IN_MEMORIAM.map((p, i) => (
+              <Leader
+                key={p.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={v3 ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+              >
+                <div className="avatar"><span>{p.initials}</span></div>
+                <div className="body">
+                  <div className="name">{p.name}</div>
+                  <div className="role">{p.role}</div>
+                </div>
+              </Leader>
+            ))}
+          </LeadershipGrid>
+
           <Committees>
             {COMMITTEES.map((c) => (
               <span key={c}>{c}</span>
@@ -387,6 +483,33 @@ export const About = () => {
           </Committees>
         </Container>
       </Values>
+
+      <Section>
+        <Container>
+          <SectionHeader>
+            <span className="eyebrow">Chapters</span>
+            <h2>AYAA Around the World</h2>
+            <p>Local chapters connecting alumni in the United States, Mekelle, and Addis Ababa.</p>
+          </SectionHeader>
+          <ChaptersGrid>
+            {CHAPTERS.map((ch, i) => (
+              <ChapterCard
+                key={ch.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={v3 ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+              >
+                <h3>{ch.name}</h3>
+                <ul>
+                  {ch.cities.map((city) => (
+                    <li key={city}>{city}</li>
+                  ))}
+                </ul>
+              </ChapterCard>
+            ))}
+          </ChaptersGrid>
+        </Container>
+      </Section>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import {
   Hero,
+  ReunionFlyer,
   ImpactMetrics,
   Programs,
   ImpactStory,
@@ -15,6 +16,7 @@ export const Home = () => {
   return (
     <>
       <Hero />
+      <ReunionFlyer />
       <ImpactMetrics />
       <Programs />
       <ImpactStory />

@@ -51,9 +51,9 @@ const Brand = styled.div`
   margin-bottom: 1rem;
 
   .mark {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
     overflow: hidden;
     background: white;
     display: flex;

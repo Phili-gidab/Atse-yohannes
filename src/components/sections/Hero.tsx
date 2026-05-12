@@ -145,12 +145,24 @@ const Eyebrow = styled(motion.span)`
 
 const Headline = styled(motion.h1)`
   color: white;
-  font-size: clamp(2.4rem, 5.4vw, 4.4rem);
+  font-size: clamp(1.85rem, 5.4vw, 4.4rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.12;
   letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
   text-shadow: 0 4px 40px rgba(0, 0, 0, 0.45);
+  /* Prevent long words like "Education" from being hyphenated mid-word on
+     narrow screens — keep each word intact and only break at spaces. */
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: manual;
+
+  @media (max-width: 480px) {
+    font-size: 1.85rem;
+  }
+  @media (max-width: 360px) {
+    font-size: 1.65rem;
+  }
 
   .accent {
     display: inline-block;

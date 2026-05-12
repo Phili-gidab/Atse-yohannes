@@ -11,9 +11,11 @@ interface Project {
   title: string;
   status: string;
   image: string;
+  story?: string;
   problem: string;
   action: string;
   impact: string[];
+  externalLink?: { label: string; href: string };
 }
 import { Button } from '../components/ui/Button';
 
@@ -102,11 +104,13 @@ const Project = styled(motion.div)`
         text-transform: uppercase;
         margin-bottom: 0.4rem;
       }
+      .label.story { color: var(--color-secondary-700); }
       .label.problem { color: var(--color-error); }
       .label.action { color: var(--color-info); }
       .label.impact { color: var(--color-success); }
 
       p { color: var(--color-neutral-700); margin: 0; }
+      p.story { font-style: italic; line-height: 1.7; }
     }
     ul {
       list-style: none;
@@ -181,6 +185,12 @@ export const Projects = () => {
                 </div>
                 <div className="body">
                   <h2>{p.title}</h2>
+                  {p.story && (
+                    <div className="block">
+                      <div className="label story">Background</div>
+                      <p className="story">{p.story}</p>
+                    </div>
+                  )}
                   <div className="block">
                     <div className="label problem">The Problem</div>
                     <p>{p.problem}</p>
@@ -197,9 +207,17 @@ export const Projects = () => {
                       ))}
                     </ul>
                   </div>
-                  <div style={{ marginTop: '1.5rem' }}>
-                    <Button to="/donate" variant="secondary" size="sm">Support This Project</Button>
-                  </div>
+                  {!p.status.startsWith('Completed') && (
+                    <div style={{ marginTop: '1.5rem' }}>
+                      {p.externalLink ? (
+                        <Button href={p.externalLink.href} variant="secondary" size="sm" external>
+                          {p.externalLink.label}
+                        </Button>
+                      ) : (
+                        <Button to="/donate" variant="secondary" size="sm">Support This Project</Button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </Project>
             ))}
