@@ -148,7 +148,7 @@ export const ImpactStory = () => {
           <span className="eyebrow">{STORY.eyebrow}</span>
           <h2>{STORY.title}</h2>
           <p className="body">{STORY.body}</p>
-          <div className="attribution">â€” {STORY.attribution}</div>
+          <div className="attribution">{'—'} {STORY.attribution}</div>
           <Button to="/impact" variant="primary">Read More Impact Stories</Button>
         </Content>
       </Container>

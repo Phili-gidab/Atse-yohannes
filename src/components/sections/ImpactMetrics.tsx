@@ -26,8 +26,8 @@ const Grid = styled.div`
   gap: 2rem;
 
   @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem 1rem;
   }
 `;
 
@@ -77,13 +77,19 @@ const Item = styled(motion.div)`
   }
 
   @media (max-width: 900px) {
-    border-right: none;
+    /* Two metrics per row: keep a vertical divider between the pair, drop
+       the bottom border on the last row so the section ends cleanly. */
+    border-right: 1px solid var(--color-neutral-100);
     border-bottom: 1px solid var(--color-neutral-100);
-    padding-bottom: 1.25rem;
+    padding: 1rem 0.75rem 1.25rem;
 
-    &:last-of-type {
+    &:nth-of-type(2n) { border-right: none; }
+    &:nth-last-of-type(-n + 2):nth-of-type(2n + 1) { border-bottom: none; }
+    &:last-of-type:nth-of-type(2n + 1) {
+      /* Lone third item: span the full row and stay centered. */
+      grid-column: 1 / -1;
+      border-right: none;
       border-bottom: none;
-      padding-bottom: 0;
     }
   }
 `;

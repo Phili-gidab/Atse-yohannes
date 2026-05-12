@@ -179,7 +179,7 @@ export const CommunityGallery = () => {
             <h2>The People Behind the Mission</h2>
             <p>
               Reunions, fundraisers, project visits, and the everyday community work that brings AYAA
-              alive â€” across Mekelle, Addis Ababa, and the United States.
+              alive {'—'} across Mekelle, Addis Ababa, and the United States.
             </p>
           </div>
           <Button to="/news" variant="outline">
