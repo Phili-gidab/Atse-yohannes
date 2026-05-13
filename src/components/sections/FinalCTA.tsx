@@ -25,17 +25,41 @@ const Banner = styled(motion.div)`
   color: white;
   overflow: hidden;
   text-align: center;
+  isolation: isolate;
+
+  .bg-image {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .bg-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+  }
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
+    z-index: 1;
     background-image:
       linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
     background-size: 40px 40px;
     mask-image: radial-gradient(circle at 50% 50%, black, transparent 70%);
+    pointer-events: none;
   }
+
+  > .eyebrow,
+  > h2,
+  > p,
+  > .actions,
+  > .progress { position: relative; z-index: 2; }
 
   .eyebrow {
     display: inline-flex;
@@ -134,6 +158,9 @@ export const FinalCTA = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
+          <div className="bg-image" aria-hidden="true">
+            <img src="/Atse_yohannes_bg.jpg" alt="" loading="lazy" decoding="async" />
+          </div>
           <span className="eyebrow"><Sparkles size={14} /> Active Campaign</span>
           <h2>Help Us Equip the Library Media Center</h2>
           <p>

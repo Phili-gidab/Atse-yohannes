@@ -6,8 +6,37 @@ import { Button } from '../ui/Button';
 import { useStory } from '../../hooks/useContent';
 
 const Wrap = styled.section`
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: 6rem 0;
   background: white;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image: url('/Atse_yohannes_bg.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    opacity: 0.07;
+    filter: grayscale(0.5);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      180deg,
+      white 0%,
+      rgba(255, 255, 255, 0.55) 35%,
+      rgba(255, 255, 255, 0.55) 65%,
+      white 100%
+    );
+  }
 `;
 
 const Container = styled.div`

@@ -136,7 +136,7 @@ export const AlumniNetwork = () => {
   return (
     <Wrap>
       <div className="bg-image">
-        <img src="/a49deaed21eaa32bb4fb5fc79a17b6aa.jpg" alt="" aria-hidden="true" />
+        <img src="/Atse_yohannes_bg.jpg" alt="" aria-hidden="true" />
       </div>
       <Container ref={ref}>
         <Content
