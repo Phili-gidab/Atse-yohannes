@@ -18,16 +18,34 @@ const Wrap = styled.section`
   color: white;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
+
+  .bg-image {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .bg-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+  }
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
+    z-index: 0;
     background-image:
       linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
     background-size: 60px 60px;
     mask-image: radial-gradient(circle at 50% 50%, black, transparent 75%);
+    pointer-events: none;
   }
 
   @media (max-width: 700px) {
@@ -88,6 +106,9 @@ const Subtitle = styled.p`
 export const PageHero = ({ eyebrow, title, subtitle, breadcrumbs }: PageHeroProps) => {
   return (
     <Wrap>
+      <div className="bg-image" aria-hidden="true">
+        <img src="/Atse_yohannes_bg.jpg" alt="" loading="lazy" decoding="async" />
+      </div>
       <Container>
         {breadcrumbs && (
           <Crumbs>

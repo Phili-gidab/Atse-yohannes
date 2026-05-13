@@ -166,6 +166,8 @@ const StoryBlock = styled.div`
   }
 `;
 
+const HIGHLIGHT_ICONS = [TrendingUp, Building2, Award, Users];
+
 const ACHIEVEMENTS = [
   'Raised over $10,100 USD and 8 million birr for school projects',
   'Built and improved critical school infrastructure (LMC, fence, bathrooms)',
@@ -192,23 +194,18 @@ export const Impact = () => {
       <Section>
         <Container>
           <Highlights ref={ref}>
-            {[
-              { icon: TrendingUp, m: IMPACT_METRICS[0] },
-              { icon: Building2, m: IMPACT_METRICS[1] },
-              { icon: Award, m: IMPACT_METRICS[2] },
-              { icon: Users, m: IMPACT_METRICS[3] },
-            ].map((it, i) => {
-              const Icon = it.icon;
+            {IMPACT_METRICS.map((m, i) => {
+              const Icon = HIGHLIGHT_ICONS[i % HIGHLIGHT_ICONS.length];
               return (
                 <Metric
-                  key={it.m.label}
+                  key={m.label}
                   initial={{ opacity: 0, y: 20 }}
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: i * 0.07 }}
                 >
                   <span className="icon"><Icon size={24} /></span>
-                  <div className="num">{it.m.value}</div>
-                  <div className="lbl">{it.m.label}</div>
+                  <div className="num">{m.value}</div>
+                  <div className="lbl">{m.label}</div>
                 </Metric>
               );
             })}
