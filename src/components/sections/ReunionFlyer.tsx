@@ -207,17 +207,37 @@ const formatDate = (iso: string) => {
   }
 };
 
+// How many days *after* an event we still want to feature it on the homepage.
+// Keeps a reunion visible during/just after the weekend so the banner doesn't
+// vanish the morning of the event itself.
+const FEATURED_WINDOW_DAYS_AFTER = 7;
+
 export const ReunionFlyer = () => {
   const { data: events = [] } = useEvents();
-  const today = new Date();
-  // Pick the next upcoming reunion (or any upcoming event if there's no
-  // reunion). Falls back to nothing if every event has passed.
-  const upcoming = (events as EventItem[])
-    .filter((e) => new Date(e.date) >= today)
+  const now = new Date();
+  const cutoff = new Date(now);
+  cutoff.setDate(cutoff.getDate() - FEATURED_WINDOW_DAYS_AFTER);
+
+  // Eligible = events that haven't passed beyond the trailing window. Sorted
+  // ascending so the soonest upcoming (or most recently-passed) comes first.
+  const eligible = (events as EventItem[])
+    .filter((e) => new Date(e.date) >= cutoff)
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  const reunion = upcoming.find((e) => e.type === 'Reunion') ?? upcoming[0];
+
+  // Prefer a reunion if there's one in the window; otherwise fall back to the
+  // next event of any type so the section stays populated. If nothing's
+  // eligible, render nothing.
+  const reunion = eligible.find((e) => e.type === 'Reunion') ?? eligible[0];
 
   if (!reunion) return null;
+
+  const eventDate = new Date(reunion.date);
+  const isPast = eventDate < now;
+  const eyebrowLabel = isPast
+    ? 'Recent AYAA Event'
+    : reunion.type === 'Reunion'
+    ? 'Upcoming AYAA Reunion'
+    : 'Upcoming AYAA Event';
 
   return (
     <Wrap aria-label="Upcoming AYAA reunion">
@@ -246,7 +266,7 @@ export const ReunionFlyer = () => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <span className="eyebrow"><Calendar size={14} /> Upcoming AYAA Event</span>
+          <span className="eyebrow"><Calendar size={14} /> {eyebrowLabel}</span>
           <h2>{reunion.title}</h2>
           <p>{reunion.description}</p>
           <div className="meta">

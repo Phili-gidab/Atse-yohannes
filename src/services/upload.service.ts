@@ -94,17 +94,100 @@ const firebaseUploader: Uploader = {
   },
 };
 
-// ---------- Cloudinary implementation (stub for later) ----------
-// When we migrate, fill this in with an unsigned upload preset POST to
-// https://api.cloudinary.com/v1_1/{cloud_name}/{auto|raw}/upload
-// and switch getUploader() below.
+// ---------- Cloudinary implementation ----------
+// Unsigned upload preset flow: the browser POSTs the file directly to
+// Cloudinary with a preset name. No API secret leaves the server. The preset
+// must be created in the Cloudinary console with Signing Mode = Unsigned.
+//
+// Required env vars:
+//   VITE_UPLOAD_PROVIDER=cloudinary
+//   VITE_CLOUDINARY_CLOUD_NAME=<your-cloud-name>
+//   VITE_CLOUDINARY_UPLOAD_PRESET=<your-unsigned-preset>
+//
+// Deletion via unsigned uploads is not supported (it requires a signed
+// server-side call). `remove()` therefore throws — but nothing in the app
+// calls it today, so this is fine.
+
+interface CloudinaryResponse {
+  secure_url: string;
+  public_id: string;
+  bytes: number;
+  resource_type: string;
+  format: string;
+  error?: { message: string };
+}
 
 const cloudinaryUploader: Uploader = {
-  async upload() {
-    throw new Error('Cloudinary uploader not implemented yet — set up Cloudinary first.');
+  async upload(file, { folder, onProgress, signal }) {
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string | undefined;
+    const preset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string | undefined;
+    if (!cloudName || !preset) {
+      throw new Error(
+        'Cloudinary not configured — set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET.'
+      );
+    }
+
+    const endpoint = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
+    const form = new FormData();
+    form.append('file', file);
+    form.append('upload_preset', preset);
+    // Cloudinary expects a forward-slash folder path. Strip leading/trailing
+    // slashes the same way the Firebase impl does so call sites can pass
+    // either "events" or "events/" without issues.
+    const cleanFolder = folder.replace(/^\/+|\/+$/g, '');
+    if (cleanFolder) form.append('folder', cleanFolder);
+
+    return new Promise<UploadResult>((resolve, reject) => {
+      // fetch() can't report upload progress on the browser today, so we use
+      // XHR purely to get a live percentage into the admin UI.
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', endpoint);
+
+      if (onProgress) {
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable && e.total > 0) {
+            onProgress(Math.round((e.loaded / e.total) * 100));
+          }
+        };
+      }
+
+      if (signal) {
+        const onAbort = () => xhr.abort();
+        signal.addEventListener('abort', onAbort, { once: true });
+      }
+
+      xhr.onload = () => {
+        try {
+          const json = JSON.parse(xhr.responseText) as CloudinaryResponse;
+          if (xhr.status >= 200 && xhr.status < 300 && json.secure_url) {
+            resolve({
+              url: json.secure_url,
+              path: json.public_id,
+              contentType: file.type || `${json.resource_type}/${json.format}`,
+              size: json.bytes ?? file.size,
+            });
+          } else {
+            reject(new Error(json.error?.message ?? `Cloudinary upload failed (HTTP ${xhr.status})`));
+          }
+        } catch (err) {
+          reject(new Error(`Cloudinary returned invalid JSON: ${(err as Error).message}`));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Network error during Cloudinary upload'));
+      xhr.onabort = () => reject(new Error('Upload aborted'));
+
+      xhr.send(form);
+    });
   },
+
   async remove() {
-    throw new Error('Cloudinary uploader not implemented yet.');
+    // Unsigned uploads can't delete — this would require an API secret which
+    // must live server-side. If we ever need deletion we'll add a Cloud
+    // Function that calls Cloudinary's destroy API with the signed secret.
+    throw new Error(
+      'Cloudinary delete is not supported from the browser. Remove the asset in the Cloudinary console.'
+    );
   },
 };
 

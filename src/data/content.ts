@@ -343,6 +343,15 @@ export const EVENTS = [
     type: 'Reunion',
   },
   {
+    slug: 'memorial-day-2027',
+    date: '2027-05-29',
+    title: 'Memorial Day Weekend Reunion 2027',
+    location: 'TBA, USA',
+    description:
+      'Save the date for next year’s flagship reunion. Location and full program will be announced as planning progresses.',
+    type: 'Reunion',
+  },
+  {
     slug: 'mekelle-visit-2026',
     date: '2026-08-15',
     title: 'Mekelle Chapter Annual Visit',
