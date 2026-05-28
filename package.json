@@ -8,9 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "npm run build && firebase deploy --project atse-yohannes",
-    "deploy:hosting": "npm run build && firebase deploy --only hosting --project atse-yohannes",
-    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes,storage --project atse-yohannes"
+    "deploy": "npm run build && firebase deploy --project atse-yohannes-org",
+    "deploy:hosting": "npm run build && firebase deploy --only hosting --project atse-yohannes-org",
+    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes --project atse-yohannes-org"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
