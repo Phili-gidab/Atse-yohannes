@@ -116,13 +116,6 @@ const CustomAmount = styled.div`
 
   &:focus-within { border-color: var(--color-secondary-500); }
 
-  input { min-width: 0; }
-  .freq { flex-shrink: 0; }
-
-  @media (max-width: 460px) {
-    .freq { width: 100%; justify-content: center; }
-  }
-
   .currency {
     font-family: var(--font-heading);
     font-weight: 700;
@@ -131,6 +124,7 @@ const CustomAmount = styled.div`
   }
   input {
     flex: 1;
+    min-width: 0;
     border: none;
     outline: none;
     font-size: 1.2rem;
@@ -138,29 +132,12 @@ const CustomAmount = styled.div`
     font-weight: 700;
     color: var(--color-primary-900);
     background: transparent;
-  }
-  .freq {
-    display: flex;
-    gap: 0.25rem;
-    background: var(--color-neutral-100);
-    padding: 0.25rem;
-    border-radius: 999px;
 
-    button {
-      padding: 0.4rem 0.85rem;
-      border: none;
-      background: transparent;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border-radius: 999px;
-      cursor: pointer;
-      color: var(--color-neutral-600);
-
-      &.active {
-        background: var(--color-primary-900);
-        color: white;
-      }
-    }
+    /* Hide the number-input spinner buttons for a cleaner look — donors
+       still type freely, and tier clicks populate the field. */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    &[type='number'] { -moz-appearance: textfield; appearance: textfield; }
   }
 `;
 
@@ -398,16 +375,14 @@ export const Donate = () => {
                   if (!amount) e.preventDefault();
                 }}
               >
-                <>
-                  <input type="hidden" name="cmd" value="_donations" />
-                    <input type="hidden" name="business" value={ORG.paypal.business} />
-                    <input type="hidden" name="item_name" value={ORG.paypal.itemName} />
-                    <input type="hidden" name="currency_code" value={ORG.paypal.currency} />
-                    <input type="hidden" name="amount" value={amount} />
-                    <input type="hidden" name="no_note" value="0" />
-                    <input type="hidden" name="no_shipping" value="1" />
-                    <input type="hidden" name="return" value={window.location.origin + '/donate?status=thanks'} />
-                </>
+                <input type="hidden" name="cmd" value="_donations" />
+                <input type="hidden" name="business" value={ORG.paypal.business} />
+                <input type="hidden" name="item_name" value={ORG.paypal.itemName} />
+                <input type="hidden" name="currency_code" value={ORG.paypal.currency} />
+                <input type="hidden" name="amount" value={amount} />
+                <input type="hidden" name="no_note" value="0" />
+                <input type="hidden" name="no_shipping" value="1" />
+                <input type="hidden" name="return" value={window.location.origin + '/donate?status=thanks'} />
                 <button type="submit" className="paypal-btn" disabled={!amount}>
                   <Heart size={18} />
                   {amount ? `Donate $${amount} with PayPal` : 'Enter an amount to continue'}
