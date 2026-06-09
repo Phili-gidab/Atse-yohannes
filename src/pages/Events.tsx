@@ -33,7 +33,7 @@ const List = styled.div`
   gap: 1.25rem;
 `;
 
-const Event = styled(motion.div)`
+const Event = styled(motion.div)<{ $past?: boolean }>`
   background: white;
   border-radius: 18px;
   padding: 1.75rem;
@@ -43,11 +43,43 @@ const Event = styled(motion.div)`
   align-items: center;
   border: 1px solid var(--color-neutral-200);
   transition: all 0.3s ease;
+  opacity: ${({ $past }) => ($past ? 0.78 : 1)};
 
   @media (max-width: 800px) {
     grid-template-columns: 1fr;
     gap: 1rem;
     text-align: left;
+  }
+
+  .past-tag {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: var(--color-neutral-100);
+    color: var(--color-neutral-600);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    vertical-align: middle;
+  }
+
+  .closed-rsvp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
+    background: var(--color-neutral-100);
+    color: var(--color-neutral-500);
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    letter-spacing: 0.3px;
+    user-select: none;
+    cursor: not-allowed;
+    border: 1px solid var(--color-neutral-200);
   }
 
   .date-badge {
@@ -121,6 +153,14 @@ const fmtDay = (d: string) => new Date(d).getDate();
 const fmtFull = (d: string) =>
   new Date(d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
+// Events that started before the cutoff (today, midnight UTC) are treated as
+// past — their RSVP button is replaced with a dim "Reservations closed" pill.
+const isPastEvent = (iso: string) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return new Date(iso) < today;
+};
+
 export const Events = () => {
   useDocumentTitle('Events', 'Annual reunions, regional fundraisers, and community events.');
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 });
@@ -139,31 +179,42 @@ export const Events = () => {
       <Section>
         <Container>
           <List ref={ref}>
-            {EVENTS.map((e, i) => (
-              <Event
-                key={e.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
-              >
-                <div className="date-badge">
-                  <div className="day">{fmtDay(e.date)}</div>
-                  <div className="month">{fmtMonth(e.date)}</div>
-                </div>
-                <div className="body">
-                  <div className="type">{e.type}</div>
-                  <h3>{e.title}</h3>
-                  <p>{e.description}</p>
-                  <div className="meta">
-                    <span><Calendar size={14} /> {fmtFull(e.date)}</span>
-                    <span><MapPin size={14} /> {e.location}</span>
+            {EVENTS.map((e, i) => {
+              const past = isPastEvent(e.date);
+              return (
+                <Event
+                  key={e.slug}
+                  $past={past}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: i * 0.07 }}
+                >
+                  <div className="date-badge">
+                    <div className="day">{fmtDay(e.date)}</div>
+                    <div className="month">{fmtMonth(e.date)}</div>
                   </div>
-                </div>
-                <Button variant="primary" size="sm" onClick={() => setRsvpFor(e)}>
-                  RSVP <ArrowRight size={14} />
-                </Button>
-              </Event>
-            ))}
+                  <div className="body">
+                    <div className="type">{e.type}</div>
+                    <h3>
+                      {e.title}
+                      {past && <span className="past-tag">Past</span>}
+                    </h3>
+                    <p>{e.description}</p>
+                    <div className="meta">
+                      <span><Calendar size={14} /> {fmtFull(e.date)}</span>
+                      <span><MapPin size={14} /> {e.location}</span>
+                    </div>
+                  </div>
+                  {past ? (
+                    <span className="closed-rsvp" aria-disabled="true">Reservations closed</span>
+                  ) : (
+                    <Button variant="primary" size="sm" onClick={() => setRsvpFor(e)}>
+                      RSVP <ArrowRight size={14} />
+                    </Button>
+                  )}
+                </Event>
+              );
+            })}
           </List>
         </Container>
       </Section>
