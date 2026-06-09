@@ -207,40 +207,26 @@ const formatDate = (iso: string) => {
   }
 };
 
-// How many days *after* an event we still want to feature it on the homepage.
-// Keeps a reunion visible during/just after the weekend so the banner doesn't
-// vanish the morning of the event itself.
-const FEATURED_WINDOW_DAYS_AFTER = 7;
-
 export const ReunionFlyer = () => {
   const { data: events = [] } = useEvents();
   const now = new Date();
-  const cutoff = new Date(now);
-  cutoff.setDate(cutoff.getDate() - FEATURED_WINDOW_DAYS_AFTER);
 
-  // Eligible = events that haven't passed beyond the trailing window. Sorted
-  // ascending so the soonest upcoming (or most recently-passed) comes first.
-  const eligible = (events as EventItem[])
-    .filter((e) => new Date(e.date) >= cutoff)
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  // Feature the most-recent PAST reunion (or most-recent past event of any
+  // type if no reunion exists). The homepage spotlight celebrates what the
+  // alumni community just gathered around, not a date that hasn't happened.
+  // Sorted descending so the freshest past event comes first.
+  const past = (events as EventItem[])
+    .filter((e) => new Date(e.date) <= now)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  // Prefer a reunion if there's one in the window; otherwise fall back to the
-  // next event of any type so the section stays populated. If nothing's
-  // eligible, render nothing.
-  const reunion = eligible.find((e) => e.type === 'Reunion') ?? eligible[0];
+  const reunion = past.find((e) => e.type === 'Reunion') ?? past[0];
 
   if (!reunion) return null;
 
-  const eventDate = new Date(reunion.date);
-  const isPast = eventDate < now;
-  const eyebrowLabel = isPast
-    ? 'Recent AYAA Event'
-    : reunion.type === 'Reunion'
-    ? 'Upcoming AYAA Reunion'
-    : 'Upcoming AYAA Event';
+  const eyebrowLabel = reunion.type === 'Reunion' ? 'Featured AYAA Reunion' : 'Featured AYAA Event';
 
   return (
-    <Wrap aria-label="Upcoming AYAA reunion">
+    <Wrap aria-label="Featured AYAA reunion">
       <Container>
         <FlyerSlot
           className={reunion.flyerImage ? 'has-image' : ''}
@@ -254,8 +240,8 @@ export const ReunionFlyer = () => {
           ) : (
             <div className="placeholder">
               <span className="icon"><ImageIcon size={26} /></span>
-              <strong>Flyer coming soon</strong>
-              <span>The official AYAA reunion flyer will be posted here shortly.</span>
+              <strong>Flyer archive</strong>
+              <span>The official AYAA flyer for this event will appear here once uploaded.</span>
             </div>
           )}
         </FlyerSlot>
@@ -274,11 +260,11 @@ export const ReunionFlyer = () => {
             <span className="chip"><MapPin size={14} /> {reunion.location}</span>
           </div>
           <div className="actions">
-            <Link to={`/events#${reunion.slug}`} className="cta-primary">
-              RSVP & Details <ArrowRight size={16} />
+            <Link to="/past-events" className="cta-primary">
+              View highlights <ArrowRight size={16} />
             </Link>
             <Link to="/events" className="cta-secondary">
-              All upcoming events
+              See all events
             </Link>
           </div>
         </Body>
