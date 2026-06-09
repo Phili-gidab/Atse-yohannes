@@ -15,6 +15,7 @@ import {
   Donate,
   News,
   Contact,
+  PastEvents,
 } from './pages';
 
 // Admin routes are lazy-loaded so the public bundle stays slim. Anything
@@ -169,6 +170,7 @@ const AnimatedRoutes = () => {
           <Route path="/resources" element={wrap(<Resources />)} />
           <Route path="/get-involved" element={wrap(<GetInvolvedPage />)} />
           <Route path="/events" element={wrap(<Events />)} />
+          <Route path="/past-events" element={wrap(<PastEvents />)} />
           <Route path="/donate" element={wrap(<Donate />)} />
           <Route path="/news" element={wrap(<News />)} />
           <Route path="/contact" element={wrap(<Contact />)} />

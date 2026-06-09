@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import styled from '@emotion/styled';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { ChevronDown, ScrollText } from 'lucide-react';
 import { PageHero } from '../components/sections/PageHero';
 import {
   HOW_WE_WORK,
@@ -10,6 +12,8 @@ import {
   ADVISORS,
   IN_MEMORIAM,
   CHAPTERS,
+  BYLAWS,
+  BYLAWS_LAST_UPDATED,
 } from '../data/content';
 import { useOrg, useOurStory, useLeadership } from '../hooks/useContent';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -295,6 +299,111 @@ const ChapterCard = styled(motion.div)`
   }
 `;
 
+const BylawsWrap = styled.div`
+  max-width: 920px;
+  margin: 0 auto;
+  display: grid;
+  gap: 0.75rem;
+`;
+
+const BylawCard = styled.div`
+  background: white;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover { border-color: var(--color-secondary-300); }
+  &[data-open='true'] { box-shadow: var(--shadow-md); }
+`;
+
+const BylawHead = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+
+  .num {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--color-primary-700), var(--color-primary-900));
+    color: var(--color-accent-300);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.5px;
+  }
+  .title {
+    flex: 1;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-primary-900);
+    font-size: 1.02rem;
+
+    .eyebrow {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--color-secondary-600);
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+  }
+  .chev {
+    color: var(--color-neutral-500);
+    transition: transform 0.25s ease;
+  }
+
+  &[aria-expanded='true'] .chev { transform: rotate(180deg); }
+`;
+
+const BylawBody = styled(motion.div)`
+  overflow: hidden;
+
+  .inner {
+    padding: 0 1.4rem 1.4rem 4.4rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .section .heading {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-primary-700);
+    margin-bottom: 0.4rem;
+  }
+  .section p {
+    color: var(--color-neutral-700);
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    .inner { padding-left: 1.4rem; }
+  }
+`;
+
+const BylawsMeta = styled.p`
+  text-align: center;
+  color: var(--color-neutral-500);
+  font-size: 0.85rem;
+  margin-top: 1.5rem;
+`;
+
 const SectionHeader = styled.div`
   text-align: center;
   max-width: 720px;
@@ -325,6 +434,7 @@ export const About = () => {
   const VALUES: ValueItem[] = VALUES_SEED;
   const COMMITTEES: string[] = COMMITTEES_SEED;
   const leadership = (leaders.length > 0 ? leaders : LEADERSHIP_SEED) as LeaderItem[];
+  const [openBylaw, setOpenBylaw] = useState<string | null>('I');
 
   return (
     <>
@@ -510,6 +620,60 @@ export const About = () => {
           </ChaptersGrid>
         </Container>
       </Section>
+
+      <Values id="bylaws">
+        <Container>
+          <SectionHeader>
+            <span className="eyebrow"><ScrollText size={12} style={{ display: 'inline', marginRight: 4, verticalAlign: '-2px' }} /> Governance</span>
+            <h2>AYAA Bylaws</h2>
+            <p>The full bylaws governing the Atse Yohannes Alumni Association — adopted by the General Assembly and updated as the Board ratifies amendments.</p>
+          </SectionHeader>
+
+          <BylawsWrap>
+            {BYLAWS.map((article) => {
+              const isOpen = openBylaw === article.number;
+              return (
+                <BylawCard key={article.number} data-open={isOpen}>
+                  <BylawHead
+                    type="button"
+                    aria-expanded={isOpen}
+                    onClick={() => setOpenBylaw(isOpen ? null : article.number)}
+                  >
+                    <span className="num">{article.number}</span>
+                    <span className="title">
+                      <span className="eyebrow">Article {article.number}</span>
+                      {article.title}
+                    </span>
+                    <ChevronDown size={20} className="chev" />
+                  </BylawHead>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <BylawBody
+                        key="body"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        <div className="inner">
+                          {article.sections.map((s, i) => (
+                            <div className="section" key={i}>
+                              {s.heading && <div className="heading">{s.heading}</div>}
+                              <p>{s.body}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </BylawBody>
+                    )}
+                  </AnimatePresence>
+                </BylawCard>
+              );
+            })}
+          </BylawsWrap>
+
+          <BylawsMeta>Last revised: {BYLAWS_LAST_UPDATED}</BylawsMeta>
+        </Container>
+      </Values>
     </>
   );
 };

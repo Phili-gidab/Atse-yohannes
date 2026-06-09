@@ -186,10 +186,12 @@ export const Footer = () => {
             <ColTitle>Explore</ColTitle>
             <ColLinks>
               <li><Link to="/about">About AYAA</Link></li>
+              <li><Link to="/about#bylaws">Bylaws</Link></li>
               <li><Link to="/projects">Projects</Link></li>
               <li><Link to="/impact">Our Impact</Link></li>
               <li><Link to="/news">News</Link></li>
               <li><Link to="/events">Events</Link></li>
+              <li><Link to="/past-events">Past Events</Link></li>
             </ColLinks>
           </div>
 

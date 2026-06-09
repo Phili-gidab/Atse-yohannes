@@ -121,15 +121,26 @@ const Item = styled(motion.div)`
   }
 `;
 
+// A metric is considered "real" when AYAA has a confirmed value — anything
+// that's just a placeholder dash, empty string, or "TBD" gets filtered out so
+// the section doesn't render empty stat cards.
+const hasValue = (v: string) => {
+  const t = (v ?? '').trim();
+  return t !== '' && t !== '—' && t !== '-' && t.toLowerCase() !== 'tbd';
+};
+
 export const ImpactMetrics = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const { data: metrics = [] } = useImpactMetrics();
+  const visible = (metrics as Metric[]).filter((m) => hasValue(m.value));
+
+  if (visible.length === 0) return null;
 
   return (
     <Wrap ref={ref}>
       <Container>
         <Grid>
-          {(metrics as Metric[]).map((m, i) => (
+          {visible.map((m, i) => (
             <Item
               key={m.label}
               initial={{ opacity: 0, y: 20 }}

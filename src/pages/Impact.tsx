@@ -169,18 +169,23 @@ const StoryBlock = styled.div`
 const HIGHLIGHT_ICONS = [TrendingUp, Building2, Award, Users];
 
 const ACHIEVEMENTS = [
-  'Raised over $10,100 USD and 8 million birr for school projects',
+  'Launched a mental health project to help students',
   'Built and improved critical school infrastructure (LMC, fence, bathrooms)',
   'Funded STEM and academic competition programs',
   'Strengthened a global alumni engagement network across multiple chapters',
   'Equipped the computer lab through the “One Person, One Laptop” initiative',
 ];
 
+const hasValue = (v: string) => {
+  const t = (v ?? '').trim();
+  return t !== '' && t !== '—' && t !== '-' && t.toLowerCase() !== 'tbd';
+};
+
 export const Impact = () => {
   useDocumentTitle('Our Impact', 'Measurable change at Atse Yohannes School — funds raised, infrastructure built, students supported.');
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { data: metricsData = [] } = useImpactMetrics();
-  const IMPACT_METRICS = metricsData as Metric[];
+  const IMPACT_METRICS = (metricsData as Metric[]).filter((m) => hasValue(m.value));
 
   return (
     <>
@@ -193,29 +198,31 @@ export const Impact = () => {
 
       <Section>
         <Container>
-          <Highlights ref={ref}>
-            {IMPACT_METRICS.map((m, i) => {
-              const Icon = HIGHLIGHT_ICONS[i % HIGHLIGHT_ICONS.length];
-              return (
-                <Metric
-                  key={m.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: i * 0.07 }}
-                >
-                  <span className="icon"><Icon size={24} /></span>
-                  <div className="num">{m.value}</div>
-                  <div className="lbl">{m.label}</div>
-                </Metric>
-              );
-            })}
-          </Highlights>
+          {IMPACT_METRICS.length > 0 && (
+            <Highlights ref={ref}>
+              {IMPACT_METRICS.map((m, i) => {
+                const Icon = HIGHLIGHT_ICONS[i % HIGHLIGHT_ICONS.length];
+                return (
+                  <Metric
+                    key={m.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: i * 0.07 }}
+                  >
+                    <span className="icon"><Icon size={24} /></span>
+                    <div className="num">{m.value}</div>
+                    <div className="lbl">{m.label}</div>
+                  </Metric>
+                );
+              })}
+            </Highlights>
+          )}
 
           <Achievements>
             <div className="image">
               <img
-                src="/68f2ee741ffb2feedf27a150f6a1542f.jpg"
-                alt="Library Media Center construction at Atse Yohannes School"
+                src="/7611f57b888ba7419a3a6abcfb44a486.jpg"
+                alt="Completed Library Media Center building at Atse Yohannes School"
               />
             </div>
             <div className="text">

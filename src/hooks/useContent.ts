@@ -25,7 +25,13 @@ import {
 // round-trip; the live Firestore data swaps in as soon as it arrives.
 
 const flatResourcesSeed = RESOURCES.flatMap((cat) =>
-  cat.items.map((it) => ({ category: cat.category, title: it.title, type: it.type, visibility: 'public' as const }))
+  cat.items.map((it) => ({
+    category: cat.category,
+    title: it.title,
+    type: it.type,
+    url: 'url' in it ? (it as { url?: string }).url : undefined,
+    visibility: 'public' as const,
+  }))
 );
 
 export const useHero = () =>

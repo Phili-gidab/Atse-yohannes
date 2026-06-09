@@ -283,6 +283,7 @@ const NAV_ITEMS = [
   { label: 'Impact', href: '/impact' },
   { label: 'Resources', href: '/resources' },
   { label: 'Events', href: '/events' },
+  { label: 'Past Events', href: '/past-events' },
   { label: 'News', href: '/news' },
   { label: 'Contact', href: '/contact' },
 ];

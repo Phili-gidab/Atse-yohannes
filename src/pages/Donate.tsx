@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { CheckCircle2, CreditCard, Lock, Shield, Heart } from 'lucide-react';
+import { CheckCircle2, CreditCard, Lock, Shield, Heart, Mail } from 'lucide-react';
 import { PageHero } from '../components/sections/PageHero';
-import { Button } from '../components/ui/Button';
-import { DONATION_TIERS } from '../data/content';
+import { DONATION_TIERS, ORG } from '../data/content';
 
 const Section = styled.section`
   padding: 5rem 0;
@@ -233,6 +232,74 @@ const Sidebar = styled.div`
   }
 `;
 
+const PaypalForm = styled.form`
+  margin: 0;
+
+  .paypal-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 1.1rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--color-accent-500), var(--color-accent-600));
+    color: var(--color-primary-950);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(245, 183, 29, 0.32);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(245, 183, 29, 0.42);
+    }
+    &:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+`;
+
+const CheckPanel = styled.div`
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--color-neutral-50);
+  border: 1px dashed var(--color-neutral-300);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+
+  .ic {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid var(--color-neutral-200);
+    color: var(--color-primary-700);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .t {
+    font-weight: 700;
+    color: var(--color-primary-900);
+    font-size: 0.95rem;
+    margin-bottom: 0.15rem;
+  }
+  .b {
+    color: var(--color-neutral-700);
+    font-size: 0.88rem;
+  }
+`;
+
 const Header = styled.div`
   margin-bottom: 2rem;
   min-width: 0;
@@ -267,6 +334,16 @@ export const Donate = () => {
     setSelectedAmount(amount);
     setCustomAmount('');
   };
+
+  // PayPal hosted-donation form. Monthly subscriptions use cmd=_xclick-subscriptions
+  // with a3/p3/t3 (amount, period, term); one-time gifts use cmd=_donations with
+  // a prefilled `amount`. Posting to a new tab keeps the user on AYAA.
+  const amount = useMemo(() => {
+    const n = customAmount ? Number(customAmount) : selectedAmount;
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  }, [customAmount, selectedAmount]);
+
+  const isMonthly = frequency === 'monthly';
 
   return (
     <>
@@ -325,13 +402,57 @@ export const Donate = () => {
                 </div>
               </CustomAmount>
 
-              <Button variant="gold" size="lg" fullWidth>
-                <Heart size={18} /> Donate ${customAmount || selectedAmount} {frequency === 'monthly' ? '/month' : ''}
-              </Button>
+              <PaypalForm
+                action="https://www.paypal.com/cgi-bin/webscr"
+                method="post"
+                target="_blank"
+                onSubmit={(e) => {
+                  if (!amount) e.preventDefault();
+                }}
+              >
+                {isMonthly ? (
+                  <>
+                    <input type="hidden" name="cmd" value="_xclick-subscriptions" />
+                    <input type="hidden" name="business" value={ORG.paypal.business} />
+                    <input type="hidden" name="item_name" value={ORG.paypal.itemName} />
+                    <input type="hidden" name="currency_code" value={ORG.paypal.currency} />
+                    <input type="hidden" name="a3" value={amount} />
+                    <input type="hidden" name="p3" value="1" />
+                    <input type="hidden" name="t3" value="M" />
+                    <input type="hidden" name="src" value="1" />
+                    <input type="hidden" name="no_note" value="1" />
+                    <input type="hidden" name="no_shipping" value="1" />
+                    <input type="hidden" name="return" value={window.location.origin + '/donate?status=thanks'} />
+                  </>
+                ) : (
+                  <>
+                    <input type="hidden" name="cmd" value="_donations" />
+                    <input type="hidden" name="business" value={ORG.paypal.business} />
+                    <input type="hidden" name="item_name" value={ORG.paypal.itemName} />
+                    <input type="hidden" name="currency_code" value={ORG.paypal.currency} />
+                    <input type="hidden" name="amount" value={amount} />
+                    <input type="hidden" name="no_note" value="0" />
+                    <input type="hidden" name="no_shipping" value="1" />
+                    <input type="hidden" name="return" value={window.location.origin + '/donate?status=thanks'} />
+                  </>
+                )}
+                <button type="submit" className="paypal-btn" disabled={!amount}>
+                  <Heart size={18} />
+                  Donate ${amount || '—'} with PayPal {isMonthly ? '/month' : ''}
+                </button>
+              </PaypalForm>
 
               <p style={{ marginTop: '1rem', fontSize: '0.85rem', color: 'var(--color-neutral-500)', textAlign: 'center' }}>
-                Donations processed securely. You'll receive a tax receipt by email.
+                Secure checkout through PayPal — credit/debit cards accepted, no PayPal account required.
               </p>
+
+              <CheckPanel>
+                <span className="ic"><Mail size={18} /></span>
+                <div>
+                  <div className="t">Prefer to donate by check?</div>
+                  <div className="b">Mail to: <strong>{ORG.mailingAddress}</strong></div>
+                </div>
+              </CheckPanel>
             </div>
 
             <Sidebar>

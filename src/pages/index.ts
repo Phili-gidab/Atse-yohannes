@@ -8,3 +8,4 @@ export { Events } from './Events';
 export { Donate } from './Donate';
 export { News } from './News';
 export { Contact } from './Contact';
+export { PastEvents } from './PastEvents';
