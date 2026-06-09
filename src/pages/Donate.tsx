@@ -321,29 +321,24 @@ const Header = styled.div`
 `;
 
 export const Donate = () => {
-  const [selectedAmount, setSelectedAmount] = useState<number>(100);
+  // No preset tier — donor must pick a tier or type any amount. Tier clicks
+  // populate the custom amount field so the donor always sees (and can edit)
+  // exactly what will be sent to PayPal. PayPal's `_xclick-subscriptions`
+  // monthly flow was removed because it forces donors to create a PayPal
+  // account, which kills the guest card-payment path.
   const [customAmount, setCustomAmount] = useState<string>('');
-  const [frequency, setFrequency] = useState<'one-time' | 'monthly'>('one-time');
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   const raised = 10100;
   const goal = 25000;
   const pct = Math.min(100, Math.round((raised / goal) * 100));
 
-  const handleTier = (amount: number) => {
-    setSelectedAmount(amount);
-    setCustomAmount('');
-  };
+  const handleTier = (n: number) => setCustomAmount(String(n));
 
-  // PayPal hosted-donation form. Monthly subscriptions use cmd=_xclick-subscriptions
-  // with a3/p3/t3 (amount, period, term); one-time gifts use cmd=_donations with
-  // a prefilled `amount`. Posting to a new tab keeps the user on AYAA.
   const amount = useMemo(() => {
-    const n = customAmount ? Number(customAmount) : selectedAmount;
+    const n = Number(customAmount);
     return Number.isFinite(n) && n > 0 ? n : 0;
-  }, [customAmount, selectedAmount]);
-
-  const isMonthly = frequency === 'monthly';
+  }, [customAmount]);
 
   return (
     <>
@@ -368,7 +363,7 @@ export const Donate = () => {
                 {DONATION_TIERS.map((t, i) => (
                   <Tier
                     key={t.amount}
-                    $selected={selectedAmount === t.amount && !customAmount}
+                    $selected={amount === t.amount}
                     $featured={t.featured}
                     onClick={() => handleTier(t.amount)}
                     initial={{ opacity: 0, y: 16 }}
@@ -386,20 +381,13 @@ export const Donate = () => {
                 <span className="currency">$</span>
                 <input
                   type="number"
-                  placeholder="Custom amount"
+                  min="1"
+                  step="1"
+                  placeholder="Enter any amount"
                   value={customAmount}
                   onChange={(e) => setCustomAmount(e.target.value)}
+                  aria-label="Donation amount in USD"
                 />
-                <div className="freq">
-                  <button
-                    className={frequency === 'one-time' ? 'active' : ''}
-                    onClick={() => setFrequency('one-time')}
-                  >One-time</button>
-                  <button
-                    className={frequency === 'monthly' ? 'active' : ''}
-                    onClick={() => setFrequency('monthly')}
-                  >Monthly</button>
-                </div>
               </CustomAmount>
 
               <PaypalForm
@@ -410,23 +398,8 @@ export const Donate = () => {
                   if (!amount) e.preventDefault();
                 }}
               >
-                {isMonthly ? (
-                  <>
-                    <input type="hidden" name="cmd" value="_xclick-subscriptions" />
-                    <input type="hidden" name="business" value={ORG.paypal.business} />
-                    <input type="hidden" name="item_name" value={ORG.paypal.itemName} />
-                    <input type="hidden" name="currency_code" value={ORG.paypal.currency} />
-                    <input type="hidden" name="a3" value={amount} />
-                    <input type="hidden" name="p3" value="1" />
-                    <input type="hidden" name="t3" value="M" />
-                    <input type="hidden" name="src" value="1" />
-                    <input type="hidden" name="no_note" value="1" />
-                    <input type="hidden" name="no_shipping" value="1" />
-                    <input type="hidden" name="return" value={window.location.origin + '/donate?status=thanks'} />
-                  </>
-                ) : (
-                  <>
-                    <input type="hidden" name="cmd" value="_donations" />
+                <>
+                  <input type="hidden" name="cmd" value="_donations" />
                     <input type="hidden" name="business" value={ORG.paypal.business} />
                     <input type="hidden" name="item_name" value={ORG.paypal.itemName} />
                     <input type="hidden" name="currency_code" value={ORG.paypal.currency} />
@@ -434,11 +407,10 @@ export const Donate = () => {
                     <input type="hidden" name="no_note" value="0" />
                     <input type="hidden" name="no_shipping" value="1" />
                     <input type="hidden" name="return" value={window.location.origin + '/donate?status=thanks'} />
-                  </>
-                )}
+                </>
                 <button type="submit" className="paypal-btn" disabled={!amount}>
                   <Heart size={18} />
-                  Donate ${amount || '—'} with PayPal {isMonthly ? '/month' : ''}
+                  {amount ? `Donate $${amount} with PayPal` : 'Enter an amount to continue'}
                 </button>
               </PaypalForm>
 

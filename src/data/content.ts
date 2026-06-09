@@ -687,25 +687,33 @@ export interface Value {
   body: string;
 }
 
+// Mission, Vision, and "Who We Are" copy preserved verbatim from the legacy
+// AYAA website (atseyohannes.org/what-we-do.html). Do not rewrite without
+// the Board's sign-off — this is the language the alumni community knows.
 export const VALUES: Value[] = [
   {
     icon: 'Target',
     title: 'Mission',
-    body: 'To connect alumni with their school and mobilize technical, financial, and material support to improve education at Atse Yohannes School.',
+    body: 'Atse Yohannes Alumni Association (AYAA) is established to connect alumni with their high school and with each other, and to promote, coordinate, and deliver alumni and friends\' technical, material, and financial support for the benefit of Atse Yohannes School.',
   },
   {
     icon: 'Sparkles',
     title: 'Vision',
-    body: 'To promote meaningful and sustainable change that supports long-term educational development.',
+    body: 'To promote passionate changes for self-sustainability wherever we can.',
   },
   {
     icon: 'HeartHandshake',
     title: 'Who We Are',
-    body: 'A non-profit, non-governmental, and non-partisan organization connecting alumni, parents, and friends of the school.',
+    body: 'A non-political, non-partisan, non-profit and non-governmental association that provides a vital link between Atse Yohannes School and private donors — alumni, parents, and friends of the school — whose technical and material support facilitates educational programming and student opportunity.',
   },
 ];
 
-export const OUR_STORY = `Atse Yohannes Alumni Association (AYAA) was established on January 11, 2003, by a group of alumni who recognized the growing challenges faced by their former school. Over time, student enrollment increased significantly while resources and funding per student declined. Despite these challenges, students and teachers continued their work under difficult conditions. AYAA was created to provide a structured way for alumni and supporters to contribute toward improving the school's learning environment and opportunities.`;
+// "Our Story" narrative — preserved verbatim from the legacy AYAA website
+// (atseyohannes.org/what-we-do.html). This is the language the alumni
+// community knows; do not paraphrase without the Board's approval.
+export const OUR_STORY = `Never in the 60-year history of Atse Yohannes School (located in the capital city of Mekelle, Tigray, Ethiopia) has there been more of a need for support from alumni and friends. Within the past few decades, the number of students joining the school has escalated. At the same time, the corresponding total budget per student has dwindled and the cost of running the school has substantially increased. Despite these challenges, students as well as teachers of the school are confronting their daily school work by overcoming equally difficult circumstances.
+
+In recognition of these difficult challenges faced by the school, Atse Yohannes Alumni Association (AYAA) became a reality on January 11th, 2003, when a group of alumni set to begin a well-deserved support mechanism to their alma mater. AYAA is a non-political, non-partisan, non-profit and non-governmental association that provides a vital link between the Atse Yohannes School and private donors (alumni, parents, friends of the school) whose technical and material support facilitate educational programming and student opportunity in the school. AYAA supports the school's efforts to maintain, preserve, and improve institutional quality.`;
 
 // Gallery shown on the homepage. Sized for ~12–18 items so three marquee
 // rows have enough variety. Each item carries an alt (used as caption in the

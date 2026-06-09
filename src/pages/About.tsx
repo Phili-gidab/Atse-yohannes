@@ -457,7 +457,9 @@ export const About = () => {
             <div className="text">
               <span className="eyebrow">Our Story</span>
               <h2>From a Few Alumni to a Global Movement</h2>
-              <p>{ourStory?.body}</p>
+              {(ourStory?.body ?? '').split(/\n\n+/).map((para, i) => (
+                <p key={i} style={{ marginBottom: '1rem' }}>{para}</p>
+              ))}
               <div className="meta">
                 <div className="item">
                   <div className="label">Founded</div>
