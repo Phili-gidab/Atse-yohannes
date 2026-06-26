@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Mail, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react';
+import { Mail, MapPin, Facebook } from 'lucide-react';
+import { TikTok } from '../icons/TikTok';
 import { useOrg } from '../../hooks/useContent';
 import { NewsletterSignup } from '../NewsletterSignup';
 
@@ -8,7 +9,7 @@ interface OrgShape {
   name: string;
   location: string;
   emails: string[];
-  social: { facebook: string; twitter: string; linkedin: string; youtube: string };
+  social: { facebook: string; tiktok: string };
 }
 
 const Wrap = styled.footer`
@@ -157,7 +158,7 @@ const Bottom = styled.div`
 
 export const Footer = () => {
   const { data: orgData } = useOrg();
-  const ORG: OrgShape = (orgData ?? { name: 'AYAA', location: '', emails: [], social: { facebook: '#', twitter: '#', linkedin: '#', youtube: '#' } }) as OrgShape;
+  const ORG: OrgShape = (orgData ?? { name: 'AYAA', location: '', emails: [], social: { facebook: '#', tiktok: '#' } }) as OrgShape;
 
   return (
     <Wrap>
@@ -176,9 +177,7 @@ export const Footer = () => {
             </Tagline>
             <Socials>
               <a href={ORG.social.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={16} /></a>
-              <a href={ORG.social.twitter} target="_blank" rel="noreferrer" aria-label="Twitter"><Twitter size={16} /></a>
-              <a href={ORG.social.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={16} /></a>
-              <a href={ORG.social.youtube} target="_blank" rel="noreferrer" aria-label="YouTube"><Youtube size={16} /></a>
+              <a href={ORG.social.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><TikTok size={16} /></a>
             </Socials>
           </div>
 

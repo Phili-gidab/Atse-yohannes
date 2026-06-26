@@ -2,22 +2,15 @@
 import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Menu,
-  X,
-  Mail,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Youtube,
-} from 'lucide-react';
+import { Menu, X, Mail, Facebook } from 'lucide-react';
+import { TikTok } from '../icons/TikTok';
 import { Button } from '../ui/Button';
 import { useOrg } from '../../hooks/useContent';
 import { useAuth } from '../../hooks/useAuth';
 
 interface OrgShape {
   emails: string[];
-  social: { facebook: string; twitter: string; linkedin: string; youtube: string };
+  social: { facebook: string; tiktok: string };
 }
 
 const TopBar = styled.div`
@@ -293,7 +286,7 @@ export const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const { data: orgData } = useOrg();
-  const ORG: OrgShape = (orgData ?? { emails: [''], social: { facebook: '#', twitter: '#', linkedin: '#', youtube: '#' } }) as OrgShape;
+  const ORG: OrgShape = (orgData ?? { emails: [''], social: { facebook: '#', tiktok: '#' } }) as OrgShape;
   const { user } = useAuth();
 
   useEffect(() => {
@@ -321,10 +314,8 @@ export const Header = () => {
               <a href={`mailto:${ORG.emails[0]}`}>{ORG.emails[0]}</a>
             </TopBarContact>
             <SocialLinks>
-              <SocialLink href={ORG.social.facebook} target="_blank" rel="noreferrer"><Facebook size={14} /></SocialLink>
-              <SocialLink href={ORG.social.twitter} target="_blank" rel="noreferrer"><Twitter size={14} /></SocialLink>
-              <SocialLink href={ORG.social.linkedin} target="_blank" rel="noreferrer"><Linkedin size={14} /></SocialLink>
-              <SocialLink href={ORG.social.youtube} target="_blank" rel="noreferrer"><Youtube size={14} /></SocialLink>
+              <SocialLink href={ORG.social.facebook} target="_blank" rel="noreferrer" aria-label="Facebook"><Facebook size={14} /></SocialLink>
+              <SocialLink href={ORG.social.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><TikTok size={14} /></SocialLink>
             </SocialLinks>
           </TopBarRight>
         </TopBarContainer>

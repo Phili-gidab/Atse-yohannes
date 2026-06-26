@@ -68,7 +68,7 @@ interface OrgDoc {
   founded: string;
   location: string;
   emails: string[];
-  social: { facebook: string; twitter: string; linkedin: string; youtube: string };
+  social: { facebook: string; tiktok: string };
 }
 
 interface StoryDoc {
@@ -187,18 +187,8 @@ export const SettingsEditor = () => {
                   <input value={org.social.facebook} onChange={(e) => setOrg({ ...org, social: { ...org.social, facebook: e.target.value } })} />
                 </div>
                 <div>
-                  <label>X / Twitter</label>
-                  <input value={org.social.twitter} onChange={(e) => setOrg({ ...org, social: { ...org.social, twitter: e.target.value } })} />
-                </div>
-              </div>
-              <div className="pair">
-                <div>
-                  <label>LinkedIn</label>
-                  <input value={org.social.linkedin} onChange={(e) => setOrg({ ...org, social: { ...org.social, linkedin: e.target.value } })} />
-                </div>
-                <div>
-                  <label>YouTube</label>
-                  <input value={org.social.youtube} onChange={(e) => setOrg({ ...org, social: { ...org.social, youtube: e.target.value } })} />
+                  <label>TikTok</label>
+                  <input value={org.social.tiktok} onChange={(e) => setOrg({ ...org, social: { ...org.social, tiktok: e.target.value } })} />
                 </div>
               </div>
             </div>

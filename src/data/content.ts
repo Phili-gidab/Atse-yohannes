@@ -14,10 +14,8 @@ export const ORG = {
   // Mailing address for check donations — taken from legacy AYAA site.
   mailingAddress: 'AYAA, PO Box 2434, Tucker, GA 30085',
   social: {
-    facebook: 'https://facebook.com/',
-    twitter: 'https://twitter.com/',
-    linkedin: 'https://linkedin.com/',
-    youtube: 'https://youtube.com/',
+    facebook: 'https://www.facebook.com/share/1DEHPyPDrQ/',
+    tiktok: 'https://www.tiktok.com/@atseyohannesalum',
   },
   // PayPal donation config — mirrors the hosted form from the legacy site
   // (www.atseyohannes.org). Update `business` when AYAA migrates to a
