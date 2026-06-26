@@ -15,6 +15,7 @@ import {
   IMPACT_METRICS,
   GALLERY,
   RESOURCES,
+  CAMPAIGN,
 } from '../data/content';
 
 // Each hook keys to the corresponding Firestore path so cache invalidation
@@ -130,4 +131,11 @@ export const useGallery = () =>
     queryKey: ['gallery'],
     queryFn: () => contentService.getGallery(),
     placeholderData: GALLERY,
+  });
+
+export const useCampaign = () =>
+  useQuery({
+    queryKey: ['campaign'],
+    queryFn: () => contentService.getCampaign(),
+    placeholderData: CAMPAIGN,
   });

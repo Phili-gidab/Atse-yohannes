@@ -24,6 +24,7 @@ import {
   RESOURCES,
   DONATION_TIERS,
   VALUES,
+  CAMPAIGN,
 } from '../data/content';
 
 // Map lucide icon component → name string by inspecting displayName/name.
@@ -108,6 +109,7 @@ export const seedFirestore = async (): Promise<SeedResult[]> => {
   results.push(await seedDoc('content/story', STORY as unknown as Record<string, unknown>));
   results.push(await seedDoc('content/about', { body: OUR_STORY }));
   results.push(await seedDoc('content/committees', { items: COMMITTEES }));
+  results.push(await seedDoc('content/campaign', CAMPAIGN as unknown as Record<string, unknown>));
 
   // --- Collections ---
   results.push(

@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { CheckCircle2, CreditCard, Lock, Shield, Heart, Mail } from 'lucide-react';
 import { PageHero } from '../components/sections/PageHero';
 import { ORG } from '../data/content';
+import { useCampaign } from '../hooks/useContent';
 
 const Section = styled.section`
   padding: 5rem 0;
@@ -227,9 +228,10 @@ export const Donate = () => {
   // to create a PayPal account, which kills the guest card-payment path.
   const [customAmount, setCustomAmount] = useState<string>('');
 
-  const raised = 10100;
-  const goal = 25000;
-  const pct = Math.min(100, Math.round((raised / goal) * 100));
+  const { data: campaign } = useCampaign();
+  const raised = campaign?.raised ?? 0;
+  const goal = campaign?.goal ?? 0;
+  const pct = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
   const amount = useMemo(() => {
     const n = Number(customAmount);
@@ -304,7 +306,7 @@ export const Donate = () => {
             </div>
 
             <Sidebar>
-              <h3>Library Media Center Campaign</h3>
+              <h3>{campaign?.title}</h3>
               <div className="progress">
                 <div className="row">
                   <span>${raised.toLocaleString()} raised</span>
@@ -318,14 +320,13 @@ export const Donate = () => {
               </div>
 
               <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)' }}>
-                Help us complete the Library Media Center technology rollout — computers, books, and tools for every student.
+                {campaign?.description}
               </div>
 
               <ul>
-                <li><CheckCircle2 size={16} /> 100% of funds go to school projects</li>
-                <li><CheckCircle2 size={16} /> Tax-deductible (where applicable)</li>
-                <li><CheckCircle2 size={16} /> Quarterly impact reports to all donors</li>
-                <li><CheckCircle2 size={16} /> Recognition on the donor wall</li>
+                {(campaign?.benefits ?? []).map((benefit) => (
+                  <li key={benefit}><CheckCircle2 size={16} /> {benefit}</li>
+                ))}
               </ul>
 
               <div className="trust">

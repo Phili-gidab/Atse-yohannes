@@ -18,6 +18,7 @@ import {
   Home,
   ClipboardCheck,
   Heart,
+  Target,
   TrendingUp,
   Images,
 } from 'lucide-react';
@@ -208,6 +209,7 @@ const ContentNav = [
   { to: '/admin/chapters', label: 'Chapters', icon: Globe2 },
   { to: '/admin/resources', label: 'Resources', icon: BookOpen },
   { to: '/admin/donationTiers', label: 'Donation Tiers', icon: Heart },
+  { to: '/admin/campaign', label: 'Donation Campaign', icon: Target },
   { to: '/admin/impactMetrics', label: 'Impact Metrics', icon: TrendingUp },
   { to: '/admin/gallery', label: 'Gallery', icon: Images },
   { to: '/admin/settings', label: 'Settings', icon: Settings },

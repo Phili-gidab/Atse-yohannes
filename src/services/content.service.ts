@@ -23,6 +23,7 @@ import {
   OUR_STORY,
   ORG,
   GALLERY,
+  CAMPAIGN,
 } from '../data/content';
 
 // Resources in the seed are grouped by category, but the Firestore/admin shape
@@ -50,6 +51,7 @@ const seeds = {
   values: VALUES,
   ourStory: OUR_STORY,
   gallery: GALLERY,
+  campaign: CAMPAIGN,
 };
 
 const fetchDoc = async <T>(path: string, fallback: T): Promise<T> => {
@@ -89,6 +91,7 @@ export const contentService = {
   getStory: () => fetchDoc('content/story', seeds.story),
   getOurStory: () => fetchDoc('content/about', { body: seeds.ourStory }),
   getGallery: () => fetchDoc('content/gallery', seeds.gallery),
+  getCampaign: () => fetchDoc('content/campaign', seeds.campaign),
 
   getPrograms: () => fetchCollection('programs', seeds.programs, { orderField: 'order' }),
   getProjects: () =>

@@ -38,6 +38,9 @@ const SettingsEditor = lazy(() =>
 const GalleryEditor = lazy(() =>
   import('./pages/admin/GalleryEditor').then((m) => ({ default: m.GalleryEditor }))
 );
+const CampaignEditor = lazy(() =>
+  import('./pages/admin/CampaignEditor').then((m) => ({ default: m.CampaignEditor }))
+);
 const ApplicationsManager = lazy(() =>
   import('./pages/admin/ApplicationsManager').then((m) => ({ default: m.ApplicationsManager }))
 );
@@ -126,6 +129,7 @@ const AnimatedRoutes = () => {
             <Route index element={<Dashboard />} />
             <Route path="hero" element={<HeroEditor />} />
             <Route path="gallery" element={<GalleryEditor />} />
+            <Route path="campaign" element={<CampaignEditor />} />
             <Route path="settings" element={<SettingsEditor />} />
             <Route path="applications" element={<ApplicationsManager />} />
             <Route path="members" element={<MembersManager />} />

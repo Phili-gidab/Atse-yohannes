@@ -695,6 +695,22 @@ export const DONATION_TIERS = [
   },
 ];
 
+// The fundraising-progress card in the Donate page sidebar. Editable from the
+// admin panel (content/campaign); this is the seed shown before Firestore loads.
+export const CAMPAIGN = {
+  title: 'Library Media Center Campaign',
+  raised: 10100,
+  goal: 25000,
+  description:
+    'Help us complete the Library Media Center technology rollout — computers, books, and tools for every student.',
+  benefits: [
+    '100% of funds go to school projects',
+    'Tax-deductible (where applicable)',
+    'Quarterly impact reports to all donors',
+    'Recognition on the donor wall',
+  ],
+};
+
 export interface Value {
   icon: string;
   title: string;
