@@ -98,7 +98,13 @@ export const SettingsEditor = () => {
           getDoc(doc(db!, 'content/about')),
           getDoc(doc(db!, 'content/story')),
         ]);
-        if (orgSnap.exists()) setOrg((o) => ({ ...o, ...(orgSnap.data() as Partial<OrgDoc>) }));
+        if (orgSnap.exists()) {
+          const data = orgSnap.data() as Partial<OrgDoc>;
+          // Backfill social from the seed so newly-added networks (e.g. TikTok)
+          // aren't undefined when an older Firestore doc predates them — keeps the
+          // inputs controlled and pre-fills sensible defaults.
+          setOrg((o) => ({ ...o, ...data, social: { ...o.social, ...(data.social ?? {}) } }));
+        }
         if (aboutSnap.exists()) setAbout((a) => ({ ...a, ...(aboutSnap.data() as { body: string }) }));
         if (storySnap.exists()) setStory((s) => ({ ...s, ...(storySnap.data() as Partial<StoryDoc>) }));
       } finally {
@@ -184,11 +190,11 @@ export const SettingsEditor = () => {
               <div className="pair">
                 <div>
                   <label>Facebook</label>
-                  <input value={org.social.facebook} onChange={(e) => setOrg({ ...org, social: { ...org.social, facebook: e.target.value } })} />
+                  <input value={org.social.facebook ?? ''} onChange={(e) => setOrg({ ...org, social: { ...org.social, facebook: e.target.value } })} />
                 </div>
                 <div>
                   <label>TikTok</label>
-                  <input value={org.social.tiktok} onChange={(e) => setOrg({ ...org, social: { ...org.social, tiktok: e.target.value } })} />
+                  <input value={org.social.tiktok ?? ''} onChange={(e) => setOrg({ ...org, social: { ...org.social, tiktok: e.target.value } })} />
                 </div>
               </div>
             </div>
