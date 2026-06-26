@@ -575,22 +575,29 @@ export const NEWS = [
 
 export const EVENTS = [
   {
-    slug: 'memorial-day-2026',
-    date: '2026-05-23',
-    title: 'Memorial Day Weekend Reunion 2026',
-    location: 'Washington, DC, USA',
+    // Featured on the homepage spotlight (ReunionFlyer). `discountUrl` renders
+    // as the clickable "Reunion Discount Link" (Holiday Inn Express Charlotte
+    // Airport group block).
+    slug: 'charlotte-reunion-2026',
+    date: '2026-07-04',
+    title: 'Atse Yohannes Alumni School Reunion 2026',
+    location: 'Fiesta Banquet Hall, 1520 Alleghany St, Charlotte, NC 28208',
     description:
-      'Our flagship annual reunion — connect with alumni, hear updates from school leadership, and contribute to ongoing projects.',
+      'Join us for a celebration with a purpose to support mental health awareness and assistance for our students — a pilot project for Tigray. For those of you that will be coming to Charlotte, hotel discount is available at Boutique Hotel in Charlotte / Holiday Inn Express and Suites Charlotte Airport.',
     type: 'Reunion',
+    featured: true,
+    discountUrl:
+      'https://www.ihg.com/holidayinnexpress/hotels/us/en/charlotte/cltqu/hoteldetail?fromRedirect=true&qSrt=sBR&qIta=99502056&icdv=99502056&qSlH=CLTQU&qCpid=786792598&qAAR=IED6R&qRtP=IED6R&setPMCookies=true&qSHBrC=EX&qDest=108%20Airport%20Commons%20Dr%2C%20Charlotte%2C%20NC%2C%20US&showApp=true&adjustMonth=false&srb_u=1',
+    discountLabel: 'Reunion Discount Link',
   },
   {
-    slug: 'memorial-day-2027',
-    date: '2027-05-29',
-    title: 'Memorial Day Weekend Reunion 2027',
-    location: 'TBA, USA',
+    slug: 'family-day-charlotte-2026',
+    date: '2026-07-05',
+    title: 'Family Activities at the Park',
+    location: '6220 Park Road, Charlotte, NC 28210',
     description:
-      'Save the date for next year’s flagship reunion. Location and full program will be announced as planning progresses.',
-    type: 'Reunion',
+      'Sunday family activities starting at 11:00 AM. Come and enjoy a picnic, games, music, group pictures, and catching up with old friends and family.',
+    type: 'Gathering',
   },
   {
     slug: 'mekelle-visit-2026',
@@ -609,6 +616,15 @@ export const EVENTS = [
     description:
       'A formal evening to celebrate alumni and raise funds for the Library Media Center technology rollout.',
     type: 'Fundraiser',
+  },
+  {
+    slug: 'memorial-day-2027',
+    date: '2027-05-29',
+    title: 'Memorial Day Weekend Reunion 2027',
+    location: 'TBA, USA',
+    description:
+      'Save the date for next year’s flagship reunion. Location and full program will be announced as planning progresses.',
+    type: 'Reunion',
   },
 ];
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Calendar, MapPin, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, ExternalLink } from 'lucide-react';
 import { PageHero } from '../components/sections/PageHero';
 import { Button } from '../components/ui/Button';
 import { useEvents } from '../hooks/useContent';
@@ -16,6 +16,8 @@ interface EventItem {
   location: string;
   description: string;
   type: string;
+  discountUrl?: string;
+  discountLabel?: string;
 }
 
 const Section = styled.section`
@@ -138,6 +140,18 @@ const Event = styled(motion.div)<{ $past?: boolean }>`
 
       span { display: inline-flex; align-items: center; gap: 4px; }
     }
+    .discount-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.7rem;
+      color: var(--color-secondary-700);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+
+      &:hover { color: var(--color-secondary-600); text-decoration: underline; }
+    }
   }
 
   &:hover {
@@ -204,6 +218,16 @@ export const Events = () => {
                       <span><Calendar size={14} /> {fmtFull(e.date)}</span>
                       <span><MapPin size={14} /> {e.location}</span>
                     </div>
+                    {e.discountUrl && (
+                      <a
+                        className="discount-link"
+                        href={e.discountUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {e.discountLabel || 'Reunion Discount Link'} <ExternalLink size={14} />
+                      </a>
+                    )}
                   </div>
                   {past ? (
                     <span className="closed-rsvp" aria-disabled="true">Reservations closed</span>

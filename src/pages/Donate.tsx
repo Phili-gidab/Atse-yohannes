@@ -1,10 +1,8 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
 import { CheckCircle2, CreditCard, Lock, Shield, Heart, Mail } from 'lucide-react';
 import { PageHero } from '../components/sections/PageHero';
-import { DONATION_TIERS, ORG } from '../data/content';
+import { ORG } from '../data/content';
 
 const Section = styled.section`
   padding: 5rem 0;
@@ -26,80 +24,6 @@ const Layout = styled.div`
   @media (max-width: 1024px) {
     grid-template-columns: minmax(0, 1fr);
     gap: 2.5rem;
-  }
-`;
-
-const TiersList = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-
-  @media (max-width: 540px) { grid-template-columns: minmax(0, 1fr); }
-`;
-
-const Tier = styled(motion.button)<{ $selected: boolean; $featured?: boolean }>`
-  position: relative;
-  padding: 1.5rem;
-  background: white;
-  border: 2px solid ${({ $selected }) => ($selected ? 'var(--color-secondary-500)' : 'var(--color-neutral-200)')};
-  border-radius: 16px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.25s ease;
-  font-family: inherit;
-  min-width: 0;
-  width: 100%;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  @media (max-width: 460px) { padding: 1.1rem 1.15rem; }
-
-  ${({ $featured }) =>
-    $featured &&
-    `
-    &::before {
-      content: 'Most Popular';
-      position: absolute;
-      top: -10px;
-      right: 16px;
-      background: var(--color-accent-500);
-      color: var(--color-primary-900);
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-weight: 800;
-    }
-    `}
-
-  .label {
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--color-secondary-700);
-    font-weight: 700;
-    margin-bottom: 0.4rem;
-  }
-  .amount {
-    font-family: var(--font-heading);
-    font-weight: 800;
-    font-size: clamp(1.5rem, 5vw, 1.75rem);
-    color: var(--color-primary-900);
-    margin-bottom: 0.4rem;
-    line-height: 1;
-  }
-  .impact {
-    font-size: 0.85rem;
-    color: var(--color-neutral-600);
-    line-height: 1.45;
-    overflow-wrap: break-word;
-  }
-
-  &:hover {
-    border-color: var(--color-secondary-400);
-    transform: translateY(-3px);
   }
 `;
 
@@ -298,19 +222,14 @@ const Header = styled.div`
 `;
 
 export const Donate = () => {
-  // No preset tier — donor must pick a tier or type any amount. Tier clicks
-  // populate the custom amount field so the donor always sees (and can edit)
-  // exactly what will be sent to PayPal. PayPal's `_xclick-subscriptions`
-  // monthly flow was removed because it forces donors to create a PayPal
-  // account, which kills the guest card-payment path.
+  // Donors type whatever amount they like — no preset tiers. PayPal's
+  // `_xclick-subscriptions` monthly flow was removed because it forces donors
+  // to create a PayPal account, which kills the guest card-payment path.
   const [customAmount, setCustomAmount] = useState<string>('');
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   const raised = 10100;
   const goal = 25000;
   const pct = Math.min(100, Math.round((raised / goal) * 100));
-
-  const handleTier = (n: number) => setCustomAmount(String(n));
 
   const amount = useMemo(() => {
     const n = Number(customAmount);
@@ -329,30 +248,12 @@ export const Donate = () => {
       <Section>
         <Container>
           <Layout>
-            <div ref={ref}>
+            <div>
               <Header>
                 <span className="eyebrow">Choose Your Impact</span>
-                <h2>Pick a tier or enter any amount</h2>
-                <p>Every donation goes directly to school programs and infrastructure.</p>
+                <h2>Enter your donation amount</h2>
+                <p>Give whatever you like — every donation goes directly to school programs and infrastructure.</p>
               </Header>
-
-              <TiersList>
-                {DONATION_TIERS.map((t, i) => (
-                  <Tier
-                    key={t.amount}
-                    $selected={amount === t.amount}
-                    $featured={t.featured}
-                    onClick={() => handleTier(t.amount)}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.4, delay: i * 0.06 }}
-                  >
-                    <div className="label">{t.label}</div>
-                    <div className="amount">${t.amount}</div>
-                    <div className="impact">{t.impact}</div>
-                  </Tier>
-                ))}
-              </TiersList>
 
               <CustomAmount>
                 <span className="currency">$</span>

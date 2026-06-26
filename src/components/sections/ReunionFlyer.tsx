@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, ArrowRight, ImageIcon } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, ImageIcon, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEvents } from '../../hooks/useContent';
 
@@ -12,6 +12,9 @@ interface EventItem {
   description: string;
   type: string;
   flyerImage?: string;
+  featured?: boolean;
+  discountUrl?: string;
+  discountLabel?: string;
 }
 
 // Featured AYAA reunion banner. Shows the next reunion-type event with either
@@ -209,21 +212,36 @@ const formatDate = (iso: string) => {
 
 export const ReunionFlyer = () => {
   const { data: events = [] } = useEvents();
-  const now = new Date();
+  const list = events as EventItem[];
 
-  // Feature the most-recent PAST reunion (or most-recent past event of any
-  // type if no reunion exists). The homepage spotlight celebrates what the
-  // alumni community just gathered around, not a date that hasn't happened.
-  // Sorted descending so the freshest past event comes first.
-  const past = (events as EventItem[])
-    .filter((e) => new Date(e.date) <= now)
+  // Today at local midnight — an event dated today still counts as upcoming.
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const cutoff = today.getTime();
+
+  const upcoming = list
+    .filter((e) => new Date(e.date).getTime() >= cutoff)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const past = list
+    .filter((e) => new Date(e.date).getTime() < cutoff)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const reunion = past.find((e) => e.type === 'Reunion') ?? past[0];
+  // Spotlight priority: an explicitly flagged event wins, otherwise the next
+  // upcoming reunion (so the homepage invites people to what's ahead), then
+  // any upcoming event, falling back to the most-recent past reunion/event.
+  const reunion =
+    list.find((e) => e.featured) ??
+    upcoming.find((e) => e.type === 'Reunion') ??
+    upcoming[0] ??
+    past.find((e) => e.type === 'Reunion') ??
+    past[0];
 
   if (!reunion) return null;
 
-  const eyebrowLabel = reunion.type === 'Reunion' ? 'Featured AYAA Reunion' : 'Featured AYAA Event';
+  const isUpcoming = new Date(reunion.date).getTime() >= cutoff;
+  const eyebrowLabel = reunion.type === 'Reunion'
+    ? `${isUpcoming ? 'Upcoming' : 'Featured'} AYAA Reunion`
+    : `${isUpcoming ? 'Upcoming' : 'Featured'} AYAA Event`;
 
   return (
     <Wrap aria-label="Featured AYAA reunion">
@@ -260,12 +278,29 @@ export const ReunionFlyer = () => {
             <span className="chip"><MapPin size={14} /> {reunion.location}</span>
           </div>
           <div className="actions">
-            <Link to="/past-events" className="cta-primary">
-              View highlights <ArrowRight size={16} />
-            </Link>
-            <Link to="/events" className="cta-secondary">
-              See all events
-            </Link>
+            {isUpcoming ? (
+              <Link to="/events" className="cta-primary">
+                RSVP for the reunion <ArrowRight size={16} />
+              </Link>
+            ) : (
+              <Link to="/past-events" className="cta-primary">
+                View highlights <ArrowRight size={16} />
+              </Link>
+            )}
+            {reunion.discountUrl ? (
+              <a
+                href={reunion.discountUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="cta-secondary"
+              >
+                {reunion.discountLabel || 'Reunion Discount Link'} <ExternalLink size={16} />
+              </a>
+            ) : (
+              <Link to="/events" className="cta-secondary">
+                See all events
+              </Link>
+            )}
           </div>
         </Body>
       </Container>
