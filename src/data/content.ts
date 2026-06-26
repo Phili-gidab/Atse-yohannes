@@ -698,9 +698,12 @@ export const DONATION_TIERS = [
 // The fundraising-progress card in the Donate page sidebar. Editable from the
 // admin panel (content/campaign); this is the seed shown before Firestore loads.
 export const CAMPAIGN = {
+  // Homepage "Active Campaign" banner (FinalCTA) — its own headline + pitch.
+  headline: 'Help Us Equip the Library Media Center',
+  bannerDescription:
+    "We've built the LMC. Now we need your support to fully equip it with computers, books, and digital tools — empowering thousands of students for years to come.",
+  // Donate page sidebar card.
   title: 'Library Media Center Campaign',
-  raised: 10100,
-  goal: 25000,
   description:
     'Help us complete the Library Media Center technology rollout — computers, books, and tools for every student.',
   benefits: [
@@ -709,6 +712,9 @@ export const CAMPAIGN = {
     'Quarterly impact reports to all donors',
     'Recognition on the donor wall',
   ],
+  // Shared fundraising progress (both surfaces).
+  raised: 10100,
+  goal: 25000,
 };
 
 export interface Value {

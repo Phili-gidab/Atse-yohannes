@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { useCampaign } from '../../hooks/useContent';
 
 const Wrap = styled.section`
   padding: 5rem 0;
@@ -146,9 +147,10 @@ const Banner = styled(motion.div)`
 
 export const FinalCTA = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const raised = 10100;
-  const goal = 25000;
-  const pct = Math.min(100, Math.round((raised / goal) * 100));
+  const { data: campaign } = useCampaign();
+  const raised = campaign?.raised ?? 0;
+  const goal = campaign?.goal ?? 0;
+  const pct = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
 
   return (
     <Wrap>
@@ -162,11 +164,8 @@ export const FinalCTA = () => {
             <img src="/Atse_yohannes_bg.jpg" alt="" loading="lazy" decoding="async" />
           </div>
           <span className="eyebrow"><Sparkles size={14} /> Active Campaign</span>
-          <h2>Help Us Equip the Library Media Center</h2>
-          <p>
-            We've built the LMC. Now we need your support to fully equip it with computers, books,
-            and digital tools — empowering thousands of students for years to come.
-          </p>
+          <h2>{campaign?.headline}</h2>
+          <p>{campaign?.bannerDescription}</p>
           <div className="actions">
             <Button to="/donate" variant="gold" size="lg">Donate Now <ArrowRight size={18} /></Button>
             <Button to="/projects" variant="outline" size="lg">

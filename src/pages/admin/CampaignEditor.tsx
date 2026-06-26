@@ -7,6 +7,8 @@ import { db } from '../../config/firebase';
 import { CAMPAIGN } from '../../data/content';
 
 interface CampaignDoc {
+  headline: string;
+  bannerDescription: string;
   title: string;
   raised: number;
   goal: number;
@@ -58,6 +60,18 @@ const Form = styled.form`
   }
 
   .helper { font-size: 0.78rem; color: var(--color-neutral-500); }
+
+  .group {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-secondary-700);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-neutral-200);
+    margin-top: 0.5rem;
+    &:first-of-type { margin-top: 0; }
+  }
 
   .actions {
     display: flex;
@@ -158,8 +172,31 @@ export const CampaignEditor = () => {
         {loading && <p>Loading…</p>}
         {!loading && (
           <>
+            <div className="group">Homepage banner</div>
+
             <div className="row">
-              <label>Campaign title</label>
+              <label>Banner headline</label>
+              <input
+                type="text"
+                value={data.headline}
+                onChange={(e) => update('headline', e.target.value)}
+                placeholder="Help Us Equip the Library Media Center"
+              />
+            </div>
+
+            <div className="row">
+              <label>Banner description</label>
+              <textarea
+                value={data.bannerDescription}
+                onChange={(e) => update('bannerDescription', e.target.value)}
+              />
+              <span className="helper">Shown in the homepage “Active Campaign” banner.</span>
+            </div>
+
+            <div className="group">Donate page card</div>
+
+            <div className="row">
+              <label>Card title</label>
               <input
                 type="text"
                 value={data.title}
@@ -167,6 +204,26 @@ export const CampaignEditor = () => {
                 placeholder="Library Media Center Campaign"
               />
             </div>
+
+            <div className="row">
+              <label>Card description</label>
+              <textarea
+                value={data.description}
+                onChange={(e) => update('description', e.target.value)}
+              />
+            </div>
+
+            <div className="row">
+              <label>Benefits (one per line)</label>
+              <textarea
+                value={data.benefits.join('\n')}
+                onChange={(e) => update('benefits', e.target.value.split('\n'))}
+                placeholder={'100% of funds go to school projects\nTax-deductible (where applicable)'}
+              />
+              <span className="helper">Each line becomes a checkmark bullet in the sidebar.</span>
+            </div>
+
+            <div className="group">Fundraising progress</div>
 
             <div className="pair">
               <div className="row">
@@ -197,24 +254,6 @@ export const CampaignEditor = () => {
               </div>
               <div className="bar"><div className="fill" style={{ width: `${pct}%` }} /></div>
             </Preview>
-
-            <div className="row">
-              <label>Description</label>
-              <textarea
-                value={data.description}
-                onChange={(e) => update('description', e.target.value)}
-              />
-            </div>
-
-            <div className="row">
-              <label>Benefits (one per line)</label>
-              <textarea
-                value={data.benefits.join('\n')}
-                onChange={(e) => update('benefits', e.target.value.split('\n'))}
-                placeholder={'100% of funds go to school projects\nTax-deductible (where applicable)'}
-              />
-              <span className="helper">Each line becomes a checkmark bullet in the sidebar.</span>
-            </div>
 
             <div className="actions">
               <button type="submit" disabled={saving}>
