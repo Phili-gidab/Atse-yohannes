@@ -288,7 +288,7 @@ export const Donate = () => {
                 <input type="hidden" name="return" value={window.location.origin + '/donate?status=thanks'} />
                 <button type="submit" className="paypal-btn" disabled={!amount}>
                   <Heart size={18} />
-                  {amount ? `Donate $${amount} with PayPal` : 'Enter an amount to continue'}
+                  {amount ? `Donate $${amount}` : 'Enter an amount to continue'}
                 </button>
               </PaypalForm>
 
