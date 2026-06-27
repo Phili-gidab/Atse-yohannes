@@ -156,6 +156,21 @@ const Bottom = styled.div`
   }
 `;
 
+const Credit = styled.div`
+  text-align: center;
+  padding-top: 1rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+
+  a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+    &:hover { color: var(--color-accent-400); }
+  }
+`;
+
 export const Footer = () => {
   const { data: orgData } = useOrg();
   const ORG: OrgShape = (orgData ?? { name: 'AYAA', location: '', emails: [], social: { facebook: '#', tiktok: '#' } }) as OrgShape;
@@ -230,6 +245,10 @@ export const Footer = () => {
           <span>© {new Date().getFullYear()} {ORG.name}. All rights reserved.</span>
           <span>A non-profit, non-political organization.</span>
         </Bottom>
+
+        <Credit>
+          Powered by <a href="https://wezete.com" target="_blank" rel="noreferrer">Wezete Technology</a>
+        </Credit>
       </Container>
     </Wrap>
   );
